@@ -31,4 +31,10 @@ public class Task {
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL) //양방향 매핑
     private List<Timer> timers = new ArrayList<>();
+
+    //연관관계 편의 메서드
+    public void addTimer(Timer timer) {
+        this.timers.add(timer);
+        timer.setTask(this);
+    }
 }

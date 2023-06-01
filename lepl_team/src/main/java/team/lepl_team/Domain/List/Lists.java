@@ -26,4 +26,10 @@ public class Lists {
     private List<Task> tasks = new ArrayList<>();
 
     private LocalDateTime listDate;
+
+    //연관관계 편의 메서드
+    public void addTask(Task task) {
+        this.tasks.add(task);
+        task.setLists(this);
+    }
 }
