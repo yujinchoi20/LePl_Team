@@ -24,6 +24,7 @@ public class Member {
     @JoinColumn(name = "character_id")
     private Character character;
 
+    //Member, Lists 사이의 양방향 관계가 맞는지 생각해보기
     /*@OneToMany(mappedBy = "member") //양방향 매핑 -> 연관관계 편의 메서드 필요!
     private List<Lists> lists = new ArrayList<>();
 
@@ -32,4 +33,6 @@ public class Member {
         this.lists.add(list); //Member 엔티티의 lists에 받아온 list를 넣고
         list.setMember(this); //현재 나의 일정을 넣어준다.
     }*/
+
+
 }

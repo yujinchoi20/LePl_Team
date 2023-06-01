@@ -16,3 +16,9 @@
     ![](img/table2.png)
 
 ------------------
+
+#### 06/01
+
+* 연관관계 편의 메서드 추가
+* MemberRepository, MemberService 작성
+* Member Test 추가 
