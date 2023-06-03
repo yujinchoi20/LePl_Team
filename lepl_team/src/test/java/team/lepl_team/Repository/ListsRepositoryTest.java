@@ -23,7 +23,7 @@ public class ListsRepositoryTest {
     @Autowired ListsRepository listsRepository;
 
     @Test
-//    @Rollback(false)
+    @Rollback(false)
     public void 일정추가() throws Exception {
         //given
         Lists lists = new Lists();
