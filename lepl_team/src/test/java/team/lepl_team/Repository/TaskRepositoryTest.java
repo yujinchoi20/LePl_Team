@@ -22,7 +22,6 @@ public class TaskRepositoryTest {
     @Autowired TaskRepository taskRepository;
 
     @Test
-    @Rollback(value = false)
     public void 업무추가() throws Exception {
         //given
         Task task = new Task();
@@ -36,5 +35,39 @@ public class TaskRepositoryTest {
 
         //then
         System.out.println(taskAll);
+    }
+
+    @Test
+    public void 업무조회() throws Exception {
+        //given
+        Task task = new Task();
+        task.setContent("JPA 공부!!");
+        task.setStartTime("20:00");
+        task.setEndTime("24:00");
+
+        taskRepository.save(task);
+
+        //when
+        Task findOne = taskRepository.findOne(task.getId());
+
+        //then
+        Assertions.assertThat(task).isEqualTo(findOne);
+    }
+
+    @Test
+    public void 전체_업무조회() throws Exception {
+        //given
+        Task task = new Task();
+        task.setContent("JPA 공부!!");
+        task.setStartTime("20:00");
+        task.setEndTime("24:00");
+
+        taskRepository.save(task);
+
+        //when
+        List<Task> findAll = taskRepository.findAll();
+
+        //then
+        Assertions.assertThat(findAll.size()).isEqualTo(2);
     }
 }

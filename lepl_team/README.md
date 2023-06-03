@@ -28,3 +28,12 @@
 * Task에 업무가 추가되면 Lists에 오늘의 일정이 추가되어야 함. 
 
 Ex) Task: 공부하기 추가 --> Lists: 날짜와 해당 날짜의 업무 개수 추가! 
+
+### 06/03
+* TaskRepository 개발 
+* TaskRepositoryTest 진행 
+* 업무 추가시 일정의 count 개수 증가 구현
+
+### 06/04
+
+업무 삭제 시 일정의 count 개수가 감수하도록 구현해야됨! 
