@@ -22,12 +22,13 @@ public class TaskRepositoryTest {
     @Autowired TaskRepository taskRepository;
 
     @Test
+//    @Rollback(false)
     public void 업무추가() throws Exception {
         //given
         Task task = new Task();
-        task.setContent("JPA 공부!!");
-        task.setStartTime("20:00");
-        task.setEndTime("24:00");
+        task.setContent("delete 쿼리 해결");
+        task.setStartTime("12:00");
+        task.setEndTime("18:00");
 
         //when
         taskRepository.save(task);
@@ -65,6 +66,24 @@ public class TaskRepositoryTest {
         taskRepository.save(task);
 
         //when
+        List<Task> findAll = taskRepository.findAll();
+
+        //then
+        Assertions.assertThat(findAll.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void 업무삭제() throws Exception {
+        //given
+        /*Task task = new Task();
+        task.setContent("이거 지워져야 됨.");
+        task.setStartTime("160:00");
+        task.setEndTime("18:00");
+
+        taskRepository.save(task);*/
+
+        //when
+        taskRepository.removeOne(1752L);
         List<Task> findAll = taskRepository.findAll();
 
         //then
