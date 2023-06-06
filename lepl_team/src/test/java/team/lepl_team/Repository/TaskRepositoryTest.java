@@ -27,8 +27,8 @@ public class TaskRepositoryTest {
         //given
         Task task = new Task();
         task.setContent("delete 쿼리 해결");
-        task.setStartTime("12:00");
-        task.setEndTime("18:00");
+        //task.setStartTime("12:00");
+        //task.setEndTime("18:00");
 
         //when
         taskRepository.save(task);
@@ -43,8 +43,8 @@ public class TaskRepositoryTest {
         //given
         Task task = new Task();
         task.setContent("JPA 공부!!");
-        task.setStartTime("20:00");
-        task.setEndTime("24:00");
+        //task.setStartTime("20:00");
+        //task.setEndTime("24:00");
 
         taskRepository.save(task);
 
@@ -60,8 +60,8 @@ public class TaskRepositoryTest {
         //given
         Task task = new Task();
         task.setContent("JPA 공부!!");
-        task.setStartTime("20:00");
-        task.setEndTime("24:00");
+        //task.setStartTime("20:00");
+        //task.setEndTime("24:00");
 
         taskRepository.save(task);
 
@@ -75,18 +75,36 @@ public class TaskRepositoryTest {
     @Test
     public void 업무삭제() throws Exception {
         //given
-        /*Task task = new Task();
+        Task task = new Task();
         task.setContent("이거 지워져야 됨.");
-        task.setStartTime("160:00");
-        task.setEndTime("18:00");
+        //task.setStartTime("16:00");
+        //task.setEndTime("18:00");
 
-        taskRepository.save(task);*/
+        taskRepository.save(task);
 
         //when
-        taskRepository.removeOne(1752L);
+        taskRepository.removeOne(task.getId());
         List<Task> findAll = taskRepository.findAll();
 
         //then
-        Assertions.assertThat(findAll.size()).isEqualTo(2);
+        Assertions.assertThat(findAll.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void 전체_업무삭제() throws Exception {
+        //given
+        Task task = new Task();
+        task.setContent("삭제할거임");
+        //task.setStartTime("17:00");
+        //task.setEndTime("18:00");
+
+        taskRepository.save(task);
+
+        //when
+        taskRepository.removeAll();
+        List<Task> taskAll = taskRepository.findAll();
+
+        //then
+        Assertions.assertThat(taskAll.size()).isEqualTo(0);
     }
 }

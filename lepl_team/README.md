@@ -46,3 +46,6 @@ delete 쿼리문은 반환 값이 없음 => createQuery() 의 매개변수중에
 
 Task.class 를 지우고 실행 해보니 원하는 방식으로 test가 진행되었다. 
 
+### 06/06
+
+* TaskService 개발 및 테스트 코드 작성 

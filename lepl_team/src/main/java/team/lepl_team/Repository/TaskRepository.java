@@ -4,10 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import team.lepl_team.Domain.List.Lists;
 import team.lepl_team.Domain.Task.Task;
 
@@ -21,8 +18,6 @@ public class TaskRepository {
 
     @PersistenceContext
     EntityManager em;
-
-    //save, findOne, findAll, remove, update(수정)
 
     //업무 저장
     public void save(Task task) { //일단은 오늘 날짜의 업무만 추가 가능하도록 구현
@@ -50,8 +45,6 @@ public class TaskRepository {
     }
 
     //업무 하나 삭제
-    @Transactional
-    @Modifying
     //@Query("DELETE FROM Task t WHERE t.id = :id")
     public void removeOne(Long id) { //오늘의 업무만 삭제 할 수 있도록 구현(수정할 것)
         //존재하는 업무만 삭제 가능
@@ -83,7 +76,9 @@ public class TaskRepository {
 
     //업무 전체 삭제
     public void removeAll() {
-        em.createQuery("delete from Task t", Task.class);
+        //오늘 날짜의 전체 업무를 삭제하는 기능으로 구체화 시켜야함.
+        em.createQuery("delete from Task t")
+                .executeUpdate();
         //전체 업무 삭제 시 lists 테이블의 count 개수 0으로 update
     }
 }
