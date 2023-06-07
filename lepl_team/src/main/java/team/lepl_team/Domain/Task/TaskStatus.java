@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Task_Status {
+public class TaskStatus {
 
     @Id @GeneratedValue
     @Column(name = "task_id")

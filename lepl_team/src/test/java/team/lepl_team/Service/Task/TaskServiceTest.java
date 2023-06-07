@@ -1,4 +1,4 @@
-package team.lepl_team.Service;
+package team.lepl_team.Service.Task;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -8,18 +8,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import team.lepl_team.Domain.Task.Task;
-import team.lepl_team.Repository.TaskRepository;
+import team.lepl_team.Service.Task.TaskService;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest
 public class TaskServiceTest {
 
-    @Autowired TaskService taskService;
+    @Autowired
+    TaskService taskService;
 
     @Test
     public void 업무추가() throws Exception {

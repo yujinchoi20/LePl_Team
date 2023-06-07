@@ -27,7 +27,7 @@ public class Task {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_status_id")
-    private Task_Status task_status;
+    private TaskStatus task_status;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL) //양방향 매핑
     private List<Timer> timers = new ArrayList<>();

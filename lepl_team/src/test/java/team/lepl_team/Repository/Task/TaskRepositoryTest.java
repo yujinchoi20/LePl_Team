@@ -1,25 +1,24 @@
-package team.lepl_team.Repository;
+package team.lepl_team.Repository.Task;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import team.lepl_team.Domain.Task.Task;
+import team.lepl_team.Repository.Task.TaskRepository;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest
 public class TaskRepositoryTest {
 
-    @Autowired TaskRepository taskRepository;
+    @Autowired
+    TaskRepository taskRepository;
 
     @Test
 //    @Rollback(false)

@@ -1,4 +1,4 @@
-package team.lepl_team.Repository;
+package team.lepl_team.Repository.Task;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

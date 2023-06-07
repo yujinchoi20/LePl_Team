@@ -1,13 +1,12 @@
-package team.lepl_team.Service;
+package team.lepl_team.Service.Task;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.lepl_team.Domain.Task.Task;
-import team.lepl_team.Repository.TaskRepository;
+import team.lepl_team.Repository.Task.TaskRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
