@@ -1,10 +1,13 @@
 package team.lepl_team.Service.Task;
 
+import org.assertj.core.api.Assertions;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import team.lepl_team.Domain.Task.TaskStatus;
 
 import static org.junit.Assert.*;
 
@@ -15,11 +18,19 @@ public class TaskStatusServiceTest {
 
     @Autowired TaskStatusService taskStatusService;
 
+    @Test
     public void 상태저장() throws Exception {
+        //given
+        TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
 
+        //when
+        taskStatusService.save(taskStatus);
+        TaskStatus findTaskStatus = taskStatusService.findOne(taskStatus.getId());
+
+        //then
+        Assertions.assertThat(taskStatus).isEqualTo(findTaskStatus);
+        System.out.println(findTaskStatus.getCompleteStatus());
+        System.out.println(findTaskStatus.getTimerOnOff());
     }
 
-    public void 상태조회() throws Exception {
-
-    }
 }
