@@ -23,6 +23,9 @@ public class Character {
     @OneToMany(mappedBy = "character") // 양방향
     private List<CharacterItem> characterItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "character")
+    private List<Friend> friends = new ArrayList<>();
+
     /**
      * 연관관계 편의 메서드
      */

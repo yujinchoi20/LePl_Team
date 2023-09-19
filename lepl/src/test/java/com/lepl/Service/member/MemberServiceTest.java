@@ -8,10 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@WebAppConfiguration
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional // 서비스 부분은 대부분 트랜잭션 사용
@@ -36,7 +34,7 @@ public class MemberServiceTest {
     }
 
     // 일부러 예외가 터지게끔 코드를 실행해서 예외가 발생하는지 보는 테스트
-    @Test() // 해당 예외 터지면 종료해줌
+    @Test(expected = IllegalStateException.class) // 해당 예외 터지면 종료해줌
 //    @Test
     public void 중복_회원_예외() throws Exception {
         // given

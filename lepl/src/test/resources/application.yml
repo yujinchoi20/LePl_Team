@@ -2,14 +2,14 @@
 
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/lepldb/lepl
+    url: jdbc:h2:tcp://localhost/~/lvpldb/lvpl
     username: sa
     password:
       driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create # table 자동 생성
+      ddl-auto: update # table 자동 생성
 #      ddl-auto: none
     properties:
       hibernate:

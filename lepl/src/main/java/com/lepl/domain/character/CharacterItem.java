@@ -20,4 +20,6 @@ public class CharacterItem {
 
     private Long itemId; // 실제 아이템이 가지는 고유값(Null 불가)
     private Boolean wearingStatus; // 착용 유무 T/F
+
+    //아이템의 총 개수도 표시하면 어떨까요??
 }

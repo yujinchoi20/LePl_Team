@@ -17,5 +17,5 @@ public class Exp {
     private Long id;
 
     private Long expAll;
-    private int level;
+    private Long level;
 }

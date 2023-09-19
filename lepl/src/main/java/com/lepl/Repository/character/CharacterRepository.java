@@ -12,13 +12,19 @@ public class CharacterRepository {
     private final EntityManager em;
 
     //캐릭터 생성
-    public void create(Character character) {
+    public Long save(Character character) {
         em.persist(character);
+
+        return character.getId();
     }
 
-    //캐릭터 찾기
+    //캐릭터 조회
     public Character findOne(Long id) {
         return em.find(Character.class, id);
     }
 
+    //캐릭터 삭제
+    public void remove (Long id) {
+        em.remove(id);
+    }
 }
