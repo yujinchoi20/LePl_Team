@@ -13,6 +13,10 @@ public class CharacterItemRepository {
 
     private final EntityManager em;
 
+    /*
+        save, findOne, findAll, remove
+    */
+
     //아이템 저장
     public void save(CharacterItem characterItem) {
         em.persist(characterItem);
@@ -30,7 +34,7 @@ public class CharacterItemRepository {
     }
 
     //소유 아이템 삭제
-    public void remove(Long id) {
-        em.remove(id);
+    public void remove(CharacterItem characterItem) {
+        em.remove(characterItem);
     }
 }

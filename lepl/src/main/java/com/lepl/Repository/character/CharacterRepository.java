@@ -11,6 +11,10 @@ public class CharacterRepository {
 
     private final EntityManager em;
 
+    /*
+        save, findOne, remove
+    */
+
     //캐릭터 생성
     public Long save(Character character) {
         em.persist(character);

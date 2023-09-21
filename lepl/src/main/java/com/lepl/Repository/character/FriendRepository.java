@@ -13,6 +13,10 @@ public class FriendRepository {
 
     private final EntityManager em;
 
+    /*
+        save, findOne, findAll, remove
+     */
+
     //친구 팔로우
     public void save(Friend friend) {
         em.persist(friend);

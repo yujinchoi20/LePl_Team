@@ -2,18 +2,27 @@ package com.lepl.Service.character;
 
 import com.lepl.Repository.character.CharacterItemRepository;
 import com.lepl.domain.character.CharacterItem;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true) //읽기 모드
+@RequiredArgsConstructor
 public class CharacterItemService {
 
     @Autowired
     CharacterItemRepository characterItemRepository;
 
+    /*
+        save, findOne, findAll, remove
+    */
+
     //아이템 저장
+    @Transactional
     public void save(CharacterItem characterItem) {
         characterItemRepository.save(characterItem);
     }
@@ -29,7 +38,8 @@ public class CharacterItemService {
     }
 
     //소유 아이템 삭제
-    public void remove(Long id) {
-        characterItemRepository.remove(id);
+    @Transactional
+    public void remove(CharacterItem characterItem) {
+        characterItemRepository.remove(characterItem);
     }
 }
