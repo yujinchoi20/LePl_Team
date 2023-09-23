@@ -1,6 +1,7 @@
 package com.lepl.domain.character;
 
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class CharacterItem {
     @JoinColumn(name = "character_id")
     private Character character;
 
+    @NotNull
     private Long itemId; // 실제 아이템이 가지는 고유값(Null 불가)
     private Boolean wearingStatus; // 착용 유무 T/F
 

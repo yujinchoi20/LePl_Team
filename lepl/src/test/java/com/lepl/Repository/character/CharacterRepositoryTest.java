@@ -32,7 +32,7 @@ class CharacterRepositoryTest {
         Character character = new Character();
         Exp exp = new Exp();
         exp.setExpAll(0l);
-        exp.setExpPre(0l);
+        exp.setExpValue(0l);
         exp.setLevel(1l);
 
         //When
