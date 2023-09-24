@@ -84,3 +84,16 @@ Task.class 를 지우고 실행 해보니 원하는 방식으로 test가 진행�
 ![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/5e3ff17c-d250-4ecf-b1c3-14bf156fd5ea)
 
 -> H2 DB
+
+* 영속성 전이(cascade)
+
+@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+@JoinColumn(name = "exp_id") // FK
+
+private Exp exp;
+
+-> FK 영속성 전이 추가!
+
+PK 데이터가 추가되기 전에 FK 데이터가 추가되는 것을 막아줌. 
+
