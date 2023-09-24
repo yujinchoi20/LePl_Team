@@ -17,7 +17,7 @@ public class Character {
     private Long id;
 
     //coin 삭제함.
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "exp_id") // FK
     private Exp exp;
     @OneToMany(mappedBy = "character") // 양방향
@@ -26,9 +26,6 @@ public class Character {
     @OneToMany(mappedBy = "character") // 양방향
     private List<Follow> follows = new ArrayList<>();
 
-    /**
-     * 연관관계 편의 메서드
-     */
     /**
      * 연관관계 편의 메서드
      */

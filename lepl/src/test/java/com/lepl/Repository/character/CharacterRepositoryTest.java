@@ -1,7 +1,9 @@
 package com.lepl.Repository.character;
 
 import com.lepl.domain.character.Character;
+import com.lepl.domain.character.CharacterItem;
 import com.lepl.domain.character.Exp;
+import com.lepl.domain.character.Follow;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +13,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
@@ -19,29 +24,43 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class CharacterRepositoryTest {
 
-    @Autowired
-    CharacterRepository characterRepository;
-
+    @Autowired CharacterRepository characterRepository;
     @Autowired ExpRepository expRepository;
+    @Autowired FollowRepository followRepository;
+    @Autowired CharacterItemRepository characterItemRepository;
 
     @Test
     @Transactional
-    @Rollback(false)
+    //@Rollback(false)
     public void 캐릭터_생성() throws Exception{
         //Given
-        Character character = new Character();
         Exp exp = new Exp();
-        exp.setExpAll(0l);
-        exp.setExpValue(0l);
-        exp.setLevel(1l);
+        List<Follow> follows = new ArrayList<>();
+        List<CharacterItem> characterItems = new ArrayList<>();
+
+        Character character = Character.createCharacter(exp, characterItems, follows);
+
+        for(int i = 0; i < 2; i++) {
+            CharacterItem characterItem = new CharacterItem();
+            characterItem.setItemId(1l);
+            characterItem.setWearingStatus(true);
+            character.addCharacterItem(characterItem);
+            characterItemRepository.save(characterItem);
+
+            Follow follow = new Follow();
+            character.addFollow(follow);
+            followRepository.save(follow);
+        }
 
         //When
-        Long saveId = characterRepository.save(character);
-        Long saveExpId = expRepository.save(exp);
+        characterRepository.save(character);
+        expRepository.save(exp);
 
         //Then
-        log.info(saveId.toString());
-        log.info(saveExpId.toString());
+        System.out.println("Character_ID: " + character.getId());
+        System.out.println("Character_EXP: " + character.getExp().getExpAll());
+        System.out.println("Character Follows Num: " + character.getFollows().size());
+        System.out.println("Character Items Num: " + character.getCharacterItems().size());
     }
 
 }

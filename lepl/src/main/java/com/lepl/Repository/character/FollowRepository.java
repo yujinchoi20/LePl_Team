@@ -29,7 +29,7 @@ public class FollowRepository {
 
     //전체 친구 조회
     public List<Follow> findAll() {
-        return em.createQuery("select f from Friend f", Follow.class)
+        return em.createQuery("select f from Follow f", Follow.class)
                 .getResultList();
     }
 
