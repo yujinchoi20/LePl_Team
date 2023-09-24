@@ -44,7 +44,7 @@ public class Exp {
             while(this.expValue >= reqExp) {
                 this.level += 1; //레벨업
                 this.expValue -= reqExp;
-                this.reqExp = (long)(Math.pow(this.level, 2) * 1.5); //레벨업에 따라 필요경험치 증가
+                this.reqExp = (long)(Math.pow(this.level-1, 2) * 1.5); //레벨업에 따라 필요경험치 증가
             }
         }
 
@@ -64,7 +64,7 @@ public class Exp {
             while(this.expValue >= reqExp) {
                 this.level += 1;//레벨업
                 this.expValue -= reqExp;
-                this.reqExp = (long)(Math.pow(this.level, 2) * 1.5); //레벨업에 따라 필요경험치 증가
+                this.reqExp = (long)(Math.pow(this.level-1, 2) * 1.5); //레벨업에 따라 필요경험치 증가
             }
         }
 
