@@ -72,3 +72,15 @@ Task.class 를 지우고 실행 해보니 원하는 방식으로 test가 진행�
 * 알림 테이블, 엔티티 만들기
 
 ![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/0834a3c2-2b7e-4e14-8d73-a5b73338b471)
+
+### 09/25
+* 캐릭터 생성 테스트 완료!
+* 친구 기능 -> 팔로우/팔로잉 기능으로 변경 완료!
+
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/77f00680-bff2-4d5b-a93d-e5ed9cc61fc8)
+
+-> 테스트 결과 (Rollback)
+
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/5e3ff17c-d250-4ecf-b1c3-14bf156fd5ea)
+
+-> H2 DB
