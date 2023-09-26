@@ -16,9 +16,10 @@ public class ExpRepository {
      */
 
     //경험치 쌓기
-    public Long save(Exp exp) {
-        em.persist(exp);
-        return exp.getId();
+    public void save(Exp exp) {
+        if(exp.getId() == null) {
+            em.persist(exp);
+        }
     }
 
     //경험치 조회

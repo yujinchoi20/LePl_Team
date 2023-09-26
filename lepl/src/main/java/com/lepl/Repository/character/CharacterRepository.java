@@ -16,10 +16,10 @@ public class CharacterRepository {
     */
 
     //캐릭터 생성
-    public Long save(Character character) {
-        em.persist(character);
-
-        return character.getId();
+    public void save(Character character) {
+        if(character.getId() == null) {
+            em.persist(character);
+        }
     }
 
     //캐릭터 조회

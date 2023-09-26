@@ -19,7 +19,9 @@ public class CharacterItemRepository {
 
     //아이템 저장
     public void save(CharacterItem characterItem) {
-        em.persist(characterItem);
+        if(characterItem.getId() == null) {
+            em.persist(characterItem);
+        }
     }
 
     //아이템 1개 조회

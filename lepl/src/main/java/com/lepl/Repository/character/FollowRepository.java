@@ -19,7 +19,9 @@ public class FollowRepository {
 
     //친구 팔로우
     public void save(Follow follow) {
-        em.persist(follow);
+        if(follow.getId() == null) {
+            em.persist(follow);
+        }
     }
 
     //특정 친구 검색(조회)

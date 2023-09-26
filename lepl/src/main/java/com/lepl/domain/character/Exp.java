@@ -24,6 +24,8 @@ public class Exp {
     private Long pointTodayTimer = 0L; //일일 타이머 획득 경험치
     private Long pointTodayTask = 0L; //일일 일정 획득 경험치
 
+    //매일 pointTodayTimer, pointTodayTask 는 0L 으로 초기화!
+
     /*
     * 비즈니스 편의 메서드
     */
@@ -44,7 +46,7 @@ public class Exp {
             while(this.expValue >= reqExp) {
                 this.level += 1; //레벨업
                 this.expValue -= reqExp;
-                this.reqExp = (long)(Math.pow(this.level-1, 2) * 1.5); //레벨업에 따라 필요경험치 증가
+                this.reqExp = (long)(Math.pow(this.level-1, 2) * 2); //레벨업에 따라 필요경험치 증가
             }
         }
 
@@ -64,7 +66,7 @@ public class Exp {
             while(this.expValue >= reqExp) {
                 this.level += 1;//레벨업
                 this.expValue -= reqExp;
-                this.reqExp = (long)(Math.pow(this.level-1, 2) * 1.5); //레벨업에 따라 필요경험치 증가
+                this.reqExp = (long)(Math.pow(this.level-1, 2) * 2); //레벨업에 따라 필요경험치 증가
             }
         }
 

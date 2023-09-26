@@ -23,8 +23,8 @@ class ExpRepositoryTest {
     public void 경험치_증가() throws Exception {
         //Given
         Exp exp = new Exp();
-        exp.setExpValue(5l);
-        exp.setExpAll(5l);
+        exp.setExpValue(0l);
+        exp.setExpAll(0l);
         exp.setLevel(1l);
         exp.setReqExp(1l);
         expRepository.save(exp);
@@ -36,6 +36,14 @@ class ExpRepositoryTest {
             System.out.println("EXP: " + exp.getExpAll());
             System.out.println("TASK: " + exp.getPointTodayTask());
             System.out.println("TIMER: " + exp.getPointTodayTimer());
+
+            if(exp.getPointTodayTask() >= 12) {
+                System.out.println("already full");
+            }
+            if(exp.getPointTodayTimer() >= 12) {
+                System.out.println("already full");
+            }
+
             System.out.println("----------------------");
         }
 
@@ -44,5 +52,18 @@ class ExpRepositoryTest {
         System.out.println("EXP: " + exp.getExpAll());
         System.out.println("TASK: " + exp.getPointTodayTask());
         System.out.println("TIMER: " + exp.getPointTodayTimer());
+    }
+
+    @Test
+    @Transactional
+    public void 다음날_경험치() throws Exception {
+        //Given
+
+
+        //When
+
+
+        //Then
+
     }
 }

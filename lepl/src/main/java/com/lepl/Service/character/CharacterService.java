@@ -21,9 +21,8 @@ public class CharacterService {
 
     //캐릭터 생성
     @Transactional //쓰기 모드
-    public Long save(Character character) {
+    public void save(Character character) {
         characterRepository.save(character);
-        return character.getId();
     }
 
     //캐릭터 조회
