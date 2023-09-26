@@ -97,3 +97,13 @@ private Exp exp;
 
 PK 데이터가 추가되기 전에 FK 데이터가 추가되는 것을 막아줌. 
 
+### 09/26
+
+* Exp 테스트 코드 -> 하루 최대 경험치가 넘어가면 레벨업 안됨, 레벨업 필요 경험치 수식 변경((level - 1) ^ 2) * 2)
+* Notification Entity, Repository, Service 추가
+
+##### [고민되는 부분]
+
+-> Notification 테스트 코드 추가 예정
+
+-> 하루 경험치 리셋을 어떻게 할까? => LocalDate를 사용해서 날짜 체크하고 경험치 리셋 기능을 추가해야할듯! 
