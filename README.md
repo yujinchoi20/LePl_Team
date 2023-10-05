@@ -102,8 +102,13 @@ PK 데이터가 추가되기 전에 FK 데이터가 추가되는 것을 막아�
 * Exp 테스트 코드 -> 하루 최대 경험치가 넘어가면 레벨업 안됨, 레벨업 필요 경험치 수식 변경((level - 1) ^ 2) * 2)
 * Notification Entity, Repository, Service 추가
 
-##### [고민되는 부분]
+###### Service/Character/ExpService.java
 
--> Notification 테스트 코드 추가 예정
+-> 매일 경험치를 리셋하는 updatePoint() 메서드 
 
--> 하루 경험치 리셋을 어떻게 할까? => LocalDate를 사용해서 날짜 체크하고 경험치 리셋 기능을 추가해야할듯! 
+-> @Scheduled(cron = ), 쿼츠 크론 사용(0 0 0 1/1 * ? *): 매일 오전 12시 마다
+
+* Notification 테스트 코드 추가 예정
+
+### 10/05
+
