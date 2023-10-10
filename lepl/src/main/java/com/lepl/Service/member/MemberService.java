@@ -24,11 +24,18 @@ public class MemberService {
         return member.getId();
     }
 
-    private void validateDuplicateMember(Member member) {
+    /*
+    * MemberApiController에 사용
+    * private -> public 변경
+    * void -> boolean 변경
+    */
+    public boolean validateDuplicateMember(Member member) {
         Member findMember = memberRepository.findByUid(member.getUid());
         if(findMember!=null){
             // IllegalStateException 예외를 호출
             throw new IllegalStateException("이미 존재하는 회원입니다.");
+        } else {
+            return true;
         }
     }
 

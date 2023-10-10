@@ -1,8 +1,12 @@
 package com.lepl.api.member;
 
 
+import com.lepl.Service.character.CharacterService;
+import com.lepl.Service.character.ExpService;
 import com.lepl.Service.member.MemberService;
 import com.lepl.api.argumentresolver.Login;
+import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,8 @@ import jakarta.validation.constraints.NotEmpty;
 @RequestMapping("api/v1/members")
 public class MemberApiController {
     private final MemberService memberService;
+    private final ExpService expService;
+    private final CharacterService characterService;
 
     /**
      * 로그인
@@ -63,8 +69,19 @@ public class MemberApiController {
         member.setUid(request.getUid());
         member.setNickname(request.getNickname());
 
+        Exp exp = new Exp();
+        Character character = new Character();
+        expService.save(exp);
+        character.setExp(exp);
+        characterService.save(character);
+        member.setCharacter(character);
+
         memberService.join(member);
-        // 중복회원 처리는,, 나중에,, 하겠음,,
+
+        // 중복회원 처리
+        if(!memberService.validateDuplicateMember(member)) { //false가 반환되면 중복회원!
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterMemberResponseDto(member));
     }
