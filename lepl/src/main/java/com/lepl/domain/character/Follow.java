@@ -31,7 +31,7 @@ public class Follow {
     /*
      * setter
      */
-    public void setCharacter(Character character) {
+    public void setCharacter(Character character) { //연관관계 편의 메서드에 사용됨
         this.character = character;
     }
     public void setFollowerId(Long followerId) {

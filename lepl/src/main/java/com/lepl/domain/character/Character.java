@@ -16,15 +16,15 @@ public class Character {
     @Column(name = "character_id") //PK
     private Long id;
 
-    //coin 삭제함.
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "exp_id") // FK
     private Exp exp;
     @OneToMany(mappedBy = "character") // 양방향
     private List<CharacterItem> characterItems = new ArrayList<>();
-
     @OneToMany(mappedBy = "character") // 양방향
     private List<Follow> follows = new ArrayList<>();
+    @OneToMany(mappedBy = "character") // 양방향
+    private List<Notification> notifications = new ArrayList<>();
 
     /**
      * 연관관계 편의 메서드
@@ -37,11 +37,15 @@ public class Character {
         follow.setCharacter(this);
         this.follows.add(follow);
     }
+    public void addNotification(Notification notification) {
+        notification.setCharacter(this);
+        this.notifications.add(notification);
+    }
 
     /**
      * 생성 편의 메서드
      */
-    public static Character createCharacter(Exp exp, List<CharacterItem> characterItems, List<Follow> follows) {
+    public static Character createCharacter(Exp exp, List<CharacterItem> characterItems, List<Follow> follows, List<Notification> notifications) {
         Character character = new Character();
         character.setExp(exp);
 
@@ -50,6 +54,9 @@ public class Character {
         }
         for(Follow follow : follows) {
             character.addFollow(follow); // 연관관계 편의 메서드
+        }
+        for(Notification notification : notifications) {
+            character.addNotification(notification); // 연관관계 편의 메서드
         }
 
         return character;

@@ -20,7 +20,8 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
     public Member findByUid(String uid) {
-        List<Member> findMembers = em.createQuery("select m from Member m where m.uid = :uid", Member.class)
+        List<Member> findMembers = em.createQuery("select m from Member m" +
+                        " where m.uid = :uid", Member.class)
                 .setParameter("uid", uid)
                 .getResultList(); // List로 반환 받아야 null처리가 쉬움
         return findMembers.isEmpty() ? null : findMembers.get(0);

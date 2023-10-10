@@ -15,11 +15,11 @@ public class Notification {
     private Long id;
 
     private String content;
-    private LocalDateTime startTime;
+    private LocalDateTime startTime; //알림 발생시간
     private LocalDateTime endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "character_id")
+    @JoinColumn(name = "character_id") //FK
     private Character character;
 
     /*
@@ -27,11 +27,9 @@ public class Notification {
     */
     public static Notification createNotification(Character character, String content) {
         Notification notification = new Notification();
-
         notification.character = character;
         notification.content = content;
         notification.startTime = LocalDateTime.now();
-
         return notification;
     }
 }

@@ -1,9 +1,7 @@
 package com.lepl.Service.character;
 
+import com.lepl.domain.character.*;
 import com.lepl.domain.character.Character;
-import com.lepl.domain.character.CharacterItem;
-import com.lepl.domain.character.Exp;
-import com.lepl.domain.character.Follow;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,12 +36,13 @@ class CharacterServiceTest {
         List<CharacterItem> characterItems = new ArrayList<>();
         Exp exp = new Exp();
         List<Follow> follows = new ArrayList<>();
+        List<Notification> notifications = new ArrayList<>();
 
         exp.setExpAll(0l);
         exp.setExpValue(0l);
         exp.setLevel(1l);
 
-        Character character = Character.createCharacter(exp, characterItems, follows);
+        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
 
         for(int i = 0; i < 2; i++) {
             CharacterItem characterItem = new CharacterItem();

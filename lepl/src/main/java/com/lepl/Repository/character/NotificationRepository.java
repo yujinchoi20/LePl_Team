@@ -37,7 +37,8 @@ public class NotificationRepository {
     }
 
     public List<Notification> findAllWithCharacter(Long characterId) {
-        return em.createQuery("select n from Notification n where n.character.id =: characterId", Notification.class)
+        return em.createQuery("select n from Notification n" +
+                        " where n.character.id =: characterId", Notification.class)
                 .setParameter("characterId", characterId)
                 .getResultList();
     }

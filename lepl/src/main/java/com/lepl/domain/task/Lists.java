@@ -46,13 +46,19 @@ public class Lists {
     public static Lists createLists(Member member, LocalDateTime localDateTime, List<Task> tasks) {
         Lists lists = new Lists();
         lists.setMember(member);
+
         // null이면 바로 pass 될것임
         for(Task task : tasks) {
             lists.addTask(task); // addTask로 넣어줘야 task.setLists(this); 적용
         }
+
         // null이면 오늘날짜
-        if(localDateTime==null) lists.setListsDate(LocalDateTime.now());
-        else lists.setListsDate(localDateTime);
+        if(localDateTime==null) {
+            lists.setListsDate(LocalDateTime.now());
+        } else {
+            lists.setListsDate(localDateTime);
+        }
+
         return lists;
     }
 

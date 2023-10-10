@@ -29,4 +29,16 @@ class FollowServiceTest {
 
         //Then
     }
+
+    @Test
+    @Rollback(value = false)
+    public void 팔로워() throws Exception {
+        //Given
+
+
+        //When
+
+
+        //Then
+    }
 }

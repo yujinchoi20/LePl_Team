@@ -42,4 +42,7 @@ public class FollowService {
     public void remove(Long id) {
         followRepository.remove(id);
     }
+
+    public List<Follow> findAllWithFollowing(Long characterId) { return followRepository.findAllWithFollowing(characterId); }
+    public List<Follow> findAllWithFollower(Long characterId) { return followRepository.findAllWithFollower(characterId); }
 }

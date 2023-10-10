@@ -27,4 +27,7 @@ public class TimerService {
     public List<Timer> findAll() {
         return timerRepository.findAll();
     }
+    public List<Timer> findAllWithTask(Long taskId) {
+        return timerRepository.findAllWithTask(taskId);
+    }
 }
