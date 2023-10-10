@@ -110,5 +110,10 @@ PK 데이터가 추가되기 전에 FK 데이터가 추가되는 것을 막아�
 
 * Notification 테스트 코드 추가 예정
 
-### 10/05
+### 10/10
 
+* Notification 수정
+* MemberApiController 중복회원 추가
+* TimerApiContoller 추가 
+
+-> 테스트 코드 작성 예정
