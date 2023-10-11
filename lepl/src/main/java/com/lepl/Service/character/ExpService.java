@@ -47,7 +47,7 @@ public class ExpService {
     }
 
     //매일 경험치 리셋
-    @Scheduled(cron = "30 00 00 * * *")
+    @Scheduled(cron = "30 00 00 * * *") //매일 00시 00분 30초 획득 경험치 초기화
     @Transactional
     public void updatePoint() {
         log.debug("updatePoint Test");

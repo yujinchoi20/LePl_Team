@@ -29,7 +29,7 @@ class CharacterRepositoryTest {
 
     @Test
     @Transactional
-    //@Rollback(false)
+    @Rollback(false)
     public void 캐릭터_생성() throws Exception{
         //Given
         Exp exp = new Exp();
@@ -37,7 +37,9 @@ class CharacterRepositoryTest {
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Notification> notifications = new ArrayList<>();
 
-        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
+        //Character character = Character.createCharacter(exp, characterItems, follows, notifications);
+        Character character = characterRepository.findOne(1l); //
+        character.setExp(exp); //여기서 setter를 사용하는게 맞는지 확신 없음.
 
         for(int i = 0; i < 2; i++) {
             CharacterItem characterItem = new CharacterItem();

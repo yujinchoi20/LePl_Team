@@ -1,7 +1,11 @@
 package com.lepl.Repository.member;
 
 
+import com.lepl.Repository.character.CharacterRepository;
+import com.lepl.Service.member.MemberService;
+import com.lepl.domain.character.Character;
 import com.lepl.domain.member.Member;
+import com.lepl.domain.member.Profile;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -32,18 +36,19 @@ class MemberRepositoryTest {
         member.setUid("123");
         member.setNickname("test1");
 
+        Character character = new Character();
+        Profile profile = new Profile();
+        member.setCharacter(character);
+        member.setProfile(profile);
+
         // when
         memberRepository.save(member);
 
         Member findMember1 = memberRepository.findOne(member.getId());
         Member findMember2 = memberRepository.findByUid("123");
-        System.out.println(findMember2);
 
         // then
         Assertions.assertEquals(member, findMember1);
         Assertions.assertEquals(member, findMember2);
-        System.out.println(member.getUid());
-        System.out.println(findMember1.getUid());
-        System.out.println(findMember2.getId());
     }
 }

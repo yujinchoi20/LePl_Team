@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,12 +36,12 @@ public class MemberServiceTest {
 
     // 일부러 예외가 터지게끔 코드를 실행해서 예외가 발생하는지 보는 테스트
     @Test(expected = IllegalStateException.class) // 해당 예외 터지면 종료해줌
-//    @Test
     public void 중복_회원_예외() throws Exception {
         // given
         Member member1 = new Member();
         member1.setUid("123");
         member1.setNickname("test1");
+
         Member member2 = new Member();
         member2.setUid("123"); // 중복
         member2.setNickname("test2");
@@ -48,6 +49,7 @@ public class MemberServiceTest {
         // when
         memberService.join(member1);
         memberService.join(member2); // 예외가 발생해야 함. (예외 터지게끔 보낸상황)
+        //insert 쿼리가 한 번만 실행됨.
 
         // then
         Assertions.fail("예외가 발생해야 한다."); // 위에서 문제가 없으면 여기까지 온다.

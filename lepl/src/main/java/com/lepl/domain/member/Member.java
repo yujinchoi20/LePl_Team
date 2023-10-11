@@ -26,11 +26,11 @@ public class Member {
     @OneToMany(mappedBy = "member") // 양방향
     private List<Lists> lists = new ArrayList<>(); // 컬렉션은 필드에서 바로 초기화
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id") // FK
     private Profile profile;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "character_id") // FK
     private Character character;
 

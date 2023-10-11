@@ -79,9 +79,7 @@ public class MemberApiController {
         memberService.join(member);
 
         // 중복회원 처리
-        if(!memberService.validateDuplicateMember(member)) { //false가 반환되면 중복회원!
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        }
+        memberService.validateDuplicateMember(member);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterMemberResponseDto(member));
     }

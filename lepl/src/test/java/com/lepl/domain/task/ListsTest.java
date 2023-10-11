@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -36,7 +37,7 @@ public class ListsTest {
         Task t2 = new Task();
 
         // when
-        lists.setMember(member);
+        lists.setMember(member); // 연관관계 편의 메서드
         lists.addTask(t1); // 연관관계 편의 메서드
         lists.addTask(t2); // 연관관계 편의 메서드
         Long dbNotId = lists.getId(); // long이 아닌 Long덕분에 null타입 가질 수 있음
