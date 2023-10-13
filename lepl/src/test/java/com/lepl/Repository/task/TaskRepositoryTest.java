@@ -1,6 +1,8 @@
 package com.lepl.Repository.task;
 
+import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
+import com.lepl.domain.task.TaskStatus;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 
@@ -18,6 +22,8 @@ public class TaskRepositoryTest {
     @Autowired
     TaskRepository taskRepository;
     @Autowired
+    ListsRepository listsRepository;
+    @Autowired
     EntityManager em;
 
     @Test
@@ -25,20 +31,24 @@ public class TaskRepositoryTest {
     @Rollback(false) // deleteTask() 테스트 위해 잠시 롤백 제거
     public void save_find_test() throws Exception {
         // given
+        Lists lists = listsRepository.findOne(1l);
+        //TaskStatus taskStatus = new TaskStatus();
         Task task1 = new Task();
-        task1.setContent("test1");
-//        task1.setStartTime("10:30");
-//        task1.setEndTime("11:00");
         Task task2 = new Task();
+
+        task1.setContent("test1");
         task2.setContent("test2");
-//        task2.setStartTime("10:30");
-//        task2.setEndTime("11:00");
-        System.out.println(task1.getId()); // null
+        task1.setStartTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 18, 00, 00));
+        task1.setEndTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 20, 00, 00));
+        task2.setStartTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 20, 00, 00));
+        task2.setEndTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 22, 00, 00));
+        task1.setLists(lists);
+        task2.setLists(lists);
 
         // when
         taskRepository.save(task1);
         taskRepository.save(task2);
-//        em.flush(); // 강제 flush
+
         Task getTask = taskRepository.findOne(task1.getId());
         List<Task> list = taskRepository.findAll();
 
@@ -46,7 +56,7 @@ public class TaskRepositoryTest {
         Assertions.assertEquals(task1, getTask); // 정상
         if(!list.isEmpty()){
             for(int i = 0 ; i<list.size();i++){
-                System.out.println(list.get(i).getContent()); // test1, test2ㅆ
+                System.out.println(list.get(i).getContent()); // test1, test2
             }
         }
     }

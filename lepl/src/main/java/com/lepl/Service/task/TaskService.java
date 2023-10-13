@@ -44,10 +44,24 @@ public class TaskService {
     public void remove(Task task) {
         taskRepository.remove(task);
     }
+
+    /*
+    * 일정 업데이트
+    * 1. 일정 추가
+    * 2. 일정 잔여 시간 업데이트
+    * */
     @Transactional // 쓰기모드 사용 위해 - db 적용
     public void update(Task task, String content, LocalDateTime startTime, LocalDateTime endTime) {
         task.setContent(content);
         task.setStartTime(startTime);
         task.setEndTime(endTime);
+    }
+
+    @Transactional // 쓰기모드 사용 위해 - db 적용, 타이머 사용시 잔여시간 업데이트
+    public void updateStatus(Task task, String content, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime remainTime) {
+        task.setContent(content);
+        task.setStartTime(startTime);
+        task.setEndTime(endTime);
+        task.setRemainTime(remainTime);
     }
 }

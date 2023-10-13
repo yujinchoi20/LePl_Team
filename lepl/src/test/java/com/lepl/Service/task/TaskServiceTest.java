@@ -59,4 +59,14 @@ public class TaskServiceTest {
         for(Task t : list_ori) System.out.println(t.getContent()); // test1, test2
         for(Task t : list_nxt) System.out.println(t.getContent()); // test2
     }
+
+    @Test
+    public void 잔여시간_업데이트() throws Exception {
+        //given
+
+
+        //when
+
+        //then
+    }
 }

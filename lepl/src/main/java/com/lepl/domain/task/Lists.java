@@ -20,11 +20,13 @@ public class Lists {
     @JoinColumn(name = "member_id") // FK
     private Member member;
 
-    private LocalDateTime listsDate;
-
     // CascadeType.REMOVE 를 해줘야 고아객체가 안생기게 되며, Lists 삭제도 정상적으로 가능
     @OneToMany(mappedBy = "lists", cascade = CascadeType.REMOVE) // 양방향
     private List<Task> tasks = new ArrayList<>();
+
+    private LocalDateTime listsDate;
+    private LocalDateTime timerUseTime;
+    private LocalDateTime currentTime;
 
     /**
      * 연관관계 편의 메서드 => 코드 감소

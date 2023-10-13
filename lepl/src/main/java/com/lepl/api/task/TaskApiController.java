@@ -46,7 +46,7 @@ public class TaskApiController {
         listsService.join(lists);
 
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
-        Task task = Task.createTask(request.content, request.startTime, request.endTime, taskStatus);
+        Task task = Task.createTask(request.content, request.startTime, request.endTime, request.remainTime, taskStatus);
         lists.addTask(task); // 일정 추가
 
         taskStatusService.join(taskStatus);
@@ -85,6 +85,7 @@ public class TaskApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+        private LocalDateTime remainTime;
     }
     @Getter
     static class DeleteTaskRequestDto {
@@ -96,5 +97,6 @@ public class TaskApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+        private LocalDateTime remainTime;
     }
 }
