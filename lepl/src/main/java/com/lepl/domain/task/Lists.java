@@ -25,8 +25,8 @@ public class Lists {
     private List<Task> tasks = new ArrayList<>();
 
     private LocalDateTime listsDate;
-    private LocalDateTime timerUseTime;
-    private LocalDateTime currentTime;
+    private Long timerAllUseTime = 0L; //타이머 총 사용시간 (누적시간)
+    private Long curTime = 0L; //경험치 계산 후 남은 타이머 시간
 
     /**
      * 연관관계 편의 메서드 => 코드 감소
