@@ -25,8 +25,9 @@ public class ExpService {
 
     //경험치 쌓기
     @Transactional //쓰기 모드
-    public void save(Exp exp) {
+    public Long save(Exp exp) {
         expRepository.save(exp);
+        return exp.getId();
     }
 
     //경험치 조회 -> 현재 경험치, 누적 경험치

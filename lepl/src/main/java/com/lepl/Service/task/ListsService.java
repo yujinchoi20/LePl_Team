@@ -56,4 +56,10 @@ public class ListsService {
     public void remove(Lists lists) {
         listsRepository.remove(lists);
     }
+
+    @Transactional // 쓰기모드, 타이머 누적 시간 및 현재 시간 업데이트
+    public void updateTime(Lists lists, Long timerAllUseTime, Long curTime) {
+        lists.setTimerAllUseTime(timerAllUseTime);
+        lists.setCurTime(curTime);
+    }
 }
