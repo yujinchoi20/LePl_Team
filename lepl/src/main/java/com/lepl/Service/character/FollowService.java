@@ -39,8 +39,8 @@ public class FollowService {
 
     //친구 팔로우 취소
     @Transactional //쓰기 모드
-    public void remove(Long id) {
-        followRepository.remove(id);
+    public void remove(Follow follow) {
+        followRepository.remove(follow);
     }
 
     public List<Follow> findAllWithFollowing(Long characterId) { return followRepository.findAllWithFollowing(characterId); }

@@ -36,8 +36,8 @@ public class FollowRepository {
     }
 
     //친구 팔로우 취소
-    public void remove(Long id) {
-        em.remove(id);
+    public void remove(Follow follow) {
+        em.remove(follow);
     }
 
     public List<Follow> findAllWithFollowing(Long characterId) {
