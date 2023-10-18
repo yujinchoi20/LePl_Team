@@ -29,7 +29,7 @@ class MemberRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(false)
+    @Rollback(value = false)
     public void 회원_로그인() throws Exception {
         // given
         Member member = new Member();

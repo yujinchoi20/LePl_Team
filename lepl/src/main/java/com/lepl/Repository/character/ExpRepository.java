@@ -35,6 +35,7 @@ public class ExpRepository {
 
     //매일 경험치 리셋
     public void updatePoint() {
+        //테스트 해보니 where 절이 필요해 보임 + Exp.class 필요없음.
         em.createQuery("update Exp e set e.pointTodayTask=0, e.pointTodayTimer=0")
                 .executeUpdate();
     }

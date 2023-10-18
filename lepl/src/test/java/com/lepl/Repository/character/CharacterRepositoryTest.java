@@ -32,7 +32,7 @@ class CharacterRepositoryTest {
     @Rollback(false)
     public void 캐릭터_생성() throws Exception{
         //Given
-        Exp exp = new Exp();
+        Exp exp = expRepository.findOne(652l);
         List<Follow> follows = new ArrayList<>();
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Notification> notifications = new ArrayList<>();
@@ -58,10 +58,9 @@ class CharacterRepositoryTest {
         expRepository.save(exp);
 
         //Then
-        System.out.println("Character_ID: " + character.getId());
-        System.out.println("Character_EXP: " + character.getExp().getExpAll());
-        System.out.println("Character Follows Num: " + character.getFollows().size());
-        System.out.println("Character Items Num: " + character.getCharacterItems().size());
+        log.debug("Character_ID: {}", character.getId());
+        log.debug("Character_EXP: {}", character.getExp());
+        log.debug("Character_Follow: {}", character.getFollows().size());
+        log.debug("Character_Item: {}", character.getCharacterItems().size());
     }
-
 }
