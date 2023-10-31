@@ -26,52 +26,54 @@ public class Exp {
     private Long pointTodayTimer = 0L; //일일 타이머 획득 경험치
     private Long pointTodayTask = 0L; //일일 일정 획득 경험치
 
-    //매일 pointTodayTimer, pointTodayTask 는 0L 으로 초기화!
-
     /*
-    * 비즈니스 편의 메서드
-    */
+     * 비즈니스 편의 메서드
+     * 1. updateExp: 경험치 업데이트
+     * 2. checkExp: 일일 최대 경험치 체크
+     * 3. levelUp: 레벨업 확인 및 필요 경험치 업데이트
+     */
     public Exp updateExp(Long pointTask, Long pointTimer) {
-        if(pointTask>0 && pointTodayTask < 12) {
-            Long checkMax = pointTodayTask+pointTask;
-            if(checkMax > 12) { // 최대 일일 경험치 허용량 12
-                pointTask = 12-pointTodayTask;
-                pointTodayTask = 12l;
-            }
-            else pointTodayTask += pointTask;
-
-            this.expAll += pointTask;
-            this.expValue += pointTask;
+        if(pointTask > 0 && pointTodayTask < 12) {
+            Long checkMax = pointTodayTask + pointTask;
+            pointTodayTask =  checkExp(checkMax, pointTask, pointTodayTask);
             log.debug("처음 task : expValue {}, reqExp {}, level {}",expValue,reqExp,level);
-            while(this.expValue >= reqExp) {
-                this.level++;
-                this.expValue = this.expValue-reqExp;
-                this.reqExp = (long)(Math.pow(this.level,1.2)+10); // 필요경험치 update
-                log.debug("expValue {}, reqExp {}, level {}",expValue,reqExp,level);
-            }
-        }else if(pointTodayTask>=12) { // 디버깅용
+            levelUp(); //레벨업 확인 및 필요 경험치 업데이트
+        } else if(pointTodayTask>=12) { // 디버깅용
             log.debug("exp pointTodayTask>=12 즉, 일일경험치 최대치 흭득상태");
         }
-        if(pointTimer>0 && pointTodayTimer < 12){
-            Long checkMax = pointTodayTimer+pointTimer;
-            if(checkMax > 12) { // 최대 일일 경험치 허용량 12
-                pointTimer = 12-pointTodayTimer;
-                pointTodayTimer = 12l;
-            }else pointTodayTimer+=pointTimer;
 
-            this.expAll += pointTimer;
-            this.expValue += pointTimer;
+        if(pointTimer > 0 && pointTodayTimer < 12){
+            Long checkMax = pointTodayTimer + pointTimer;
+            pointTodayTimer = checkExp(checkMax, pointTimer, pointTodayTimer);
             log.debug("처음 timer : expValue {}, reqExp {}, level {}",expValue,reqExp,level);
-            while(this.expValue >= reqExp) {
-                this.level++;
-                this.expValue = this.expValue-reqExp;
-                this.reqExp = (long)(Math.pow(this.level,1.2)+10); // 필요경험치 update
-                log.debug("expValue {}, reqExp {}, level {}",expValue,reqExp,level);
-            }
-        }else if(pointTodayTimer>=12) { // 디버깅용
+            levelUp(); //레벨업 확인 및 필요 경험치 업데이트
+        } else if(pointTodayTimer>=12) { // 디버깅용
             log.debug("exp pointTodayTimer>=12 즉, 일일경험치 최대치 흭득상태");
         }
 
         return this;
+    }
+
+    public Long checkExp(Long checkMax, Long point, Long pointToday) {
+        if(checkMax > 12) {
+            point = 12 - pointToday;
+            pointToday = 12l;
+        } else {
+            pointToday += point;
+        }
+
+        expAll += point;
+        expValue += point;
+
+        return pointToday;
+    }
+
+    public void levelUp() {
+        while(this.expValue >= reqExp) {
+            level++;
+            expValue = expValue - reqExp;
+            reqExp = (long)(Math.pow(level,1.1)+10); // 필요경험치 update
+            log.debug("expValue {}, reqExp {}, level {}",expValue,reqExp,level);
+        }
     }
 }

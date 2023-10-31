@@ -1,9 +1,7 @@
 package com.lepl.Repository.character;
 
 import com.lepl.Repository.member.MemberRepository;
-import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
-import com.lepl.domain.member.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
