@@ -26,7 +26,7 @@ class ExpServiceTest {
     * */
     @Test
     @Transactional
-//    @Rollback(value = false)
+    @Rollback(value = false)
     public void 매일_경험치_리셋() throws Exception {
         //Given
         Exp exp = expService.findOne(652l);

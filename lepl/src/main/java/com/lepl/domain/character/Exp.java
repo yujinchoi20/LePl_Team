@@ -27,11 +27,11 @@ public class Exp {
     private Long pointTodayTask = 0L; //일일 일정 획득 경험치
 
     /*
-     * 비즈니스 편의 메서드
-     * 1. updateExp: 경험치 업데이트
-     * 2. checkExp: 일일 최대 경험치 체크
-     * 3. levelUp: 레벨업 확인 및 필요 경험치 업데이트
-     */
+    * 비즈니스 편의 메서드
+    * 1. updateExp: 경험치 업데이트
+    * 2. checkExp: 일일 최대 경험치 체크
+    * 3. levelUp: 레벨업 확인 및 필요 경험치 업데이트
+    */
     public Exp updateExp(Long pointTask, Long pointTimer) {
         if(pointTask > 0 && pointTodayTask < 12) {
             Long checkMax = pointTodayTask + pointTask;
