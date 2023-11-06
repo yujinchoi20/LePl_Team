@@ -38,6 +38,15 @@ __[아이템 구매 시나리오]__
 
 ExpRespository, ExpService에 updateBuyItem() 메서드 추가!
 
+__[테스트 코드 작성 후 실행]__
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/0d428030-9d25-40d4-b12c-f1954830f3cb)
+
+현재 경험치가 10이고, 모자 가격이 10이기 때문에 구매조건 만족함! 
+
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/09ab5e69-47e9-444d-bcdf-ef62a0e8eff4)
+
+구매 후 현재 경험치는 0으로 업데이트 됨.
+
 ### 10/15
 
 경험치 체계 및 타이머 체계 확립
