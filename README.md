@@ -23,6 +23,21 @@
 #### 4. 테이블 설계
 ![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/73cd0ba8-b791-4162-bfef-bb1a76853dbf)
 ------------------
+### 11/06
+
+__Item 테이블 추가__
+* Item
+* ItemRepository
+* ItemService
+
+__[아이템 구매 시나리오]__
+1. Item 테이블에 관리자가 아이템을 추가함(관리자가 상점에 아이템을 등록한거라고 생각하면 됨)
+2. 사용자가 아이템 구매를 원하면 아이템 가격을 확인하여 사용자가 구매할 수 있는 아이템인지 확인함
+3. 아이템 구매 조건을 만족한다면 CharacterItem 테이블에 아이템 정보를 업데이트 함
+4. 아이템 구매에 사용된 경험치를 차감하여 Exp 테이블에 사용자 현재 경험치를 업데이트 함
+
+ExpRespository, ExpService에 updateBuyItem() 메서드 추가!
+
 ### 10/15
 
 경험치 체계 및 타이머 체계 확립
