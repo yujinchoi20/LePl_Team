@@ -16,7 +16,6 @@ public class ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
-
     /*
     * save, findOne, findAll, remove
     * */

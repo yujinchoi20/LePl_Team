@@ -32,18 +32,17 @@ class CharacterRepositoryTest {
     @Rollback(false)
     public void 캐릭터_생성() throws Exception{
         //Given
-        Exp exp = expRepository.findOne(652l);
+        Exp exp = new Exp();
         List<Follow> follows = new ArrayList<>();
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Notification> notifications = new ArrayList<>();
 
-        //Character character = Character.createCharacter(exp, characterItems, follows, notifications);
-        Character character = characterRepository.findOne(1l); //
+        Character character = new Character();
         character.setExp(exp); //여기서 setter를 사용하는게 맞는지 확신 없음.
 
         for(int i = 0; i < 2; i++) {
             CharacterItem characterItem = new CharacterItem();
-            characterItem.setItemId(1l);
+            //characterItem.setItem(1l);
             characterItem.setWearingStatus(true);
             character.addCharacterItem(characterItem);
             characterItemRepository.save(characterItem);

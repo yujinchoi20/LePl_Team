@@ -1,6 +1,7 @@
 package com.lepl.Repository.character;
 
 import com.lepl.domain.character.CharacterItem;
+import com.lepl.domain.character.Item;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public class CharacterItemRepository {
         save, findOne, findAll, remove
     */
 
-    //아이템 저장
+    //캐릭터 아이템 저장
     public void save(CharacterItem characterItem) {
         if(characterItem.getId() == null) {
             em.persist(characterItem);

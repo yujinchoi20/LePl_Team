@@ -40,6 +40,13 @@ public class ExpRepository {
                 .executeUpdate();
     }
 
+    //아이템 구매로 인한 경험치 업데이트
+    public void updateBuyItem(Long expValue) {
+        em.createQuery("update Exp e set e.expValue =: expValue")
+                .setParameter("expValue", expValue)
+                .executeUpdate();
+    }
+
     public Member findOneWithMember(Long memberId) {
         return em.createQuery("select distinct m from Member m" +
                 " join fetch m.character c" +

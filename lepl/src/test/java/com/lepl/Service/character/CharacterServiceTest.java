@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ class CharacterServiceTest {
     FollowService followService;
 
     @Test
+    @Rollback(value = false)
     public void 캐릭터_생성() throws Exception{
         //Given
         List<CharacterItem> characterItems = new ArrayList<>();
@@ -46,7 +48,7 @@ class CharacterServiceTest {
 
         for(int i = 0; i < 2; i++) {
             CharacterItem characterItem = new CharacterItem();
-            characterItem.setItemId(1l);
+            //characterItem.setItemId(1l);
             characterItem.setWearingStatus(true);
             character.addCharacterItem(characterItem);
             characterService.save(character);
@@ -65,6 +67,6 @@ class CharacterServiceTest {
         log.info("character.getExp().getExpAll() : {}",character.getExp().getExpAll());
         log.info("character.getExp().getExpValue() : {}",character.getExp().getExpValue());
         log.info("character.getExp().getLevel() : {}",character.getExp().getLevel());
-        log.info("character.getCharacterItems().get(0).getItemId() : {}",character.getCharacterItems().get(0).getItemId());
+        //log.info("character.getCharacterItems().get(0).getItemId() : {}",character.getCharacterItems().get(0).getItemId());
     }
 }

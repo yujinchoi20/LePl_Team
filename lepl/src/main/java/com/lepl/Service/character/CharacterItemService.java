@@ -1,7 +1,12 @@
 package com.lepl.Service.character;
 
 import com.lepl.Repository.character.CharacterItemRepository;
+import com.lepl.Repository.character.CharacterRepository;
+import com.lepl.Repository.character.ExpRepository;
+import com.lepl.domain.character.Character;
 import com.lepl.domain.character.CharacterItem;
+import com.lepl.domain.character.Exp;
+import com.lepl.domain.character.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +21,16 @@ public class CharacterItemService {
 
     @Autowired
     CharacterItemRepository characterItemRepository;
+    @Autowired
+    ExpRepository expRepository;
+    @Autowired
+    CharacterRepository characterRepository;
 
     /*
         save, findOne, findAll, remove
     */
 
-    //아이템 저장
+    //캐릭터 아이템 저장
     @Transactional
     public void save(CharacterItem characterItem) {
         characterItemRepository.save(characterItem);

@@ -24,6 +24,18 @@ public class Item {
     private LocalDateTime end_time;
 
     /*
-    * 필요시 생성 편의 메서드, 비즈니스 편의 메서드 생성
+    * 생성 편의 메서드
     * */
+    public static Item createItem(String type, String name, int price, int purchase_quantity, LocalDateTime start_time, LocalDateTime end_time) {
+        Item item = new Item();
+
+        item.setType(type);
+        item.setName(name);
+        item.setPrice(price);
+        item.setPurchase_quantity(purchase_quantity);
+        item.setStart_time(start_time);
+        item.setEnd_time(end_time);
+
+        return item;
+    }
 }

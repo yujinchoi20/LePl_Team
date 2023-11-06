@@ -2,6 +2,7 @@ package com.lepl.Service.character;
 
 import com.lepl.Repository.character.ExpRepository;
 import com.lepl.domain.character.Exp;
+import com.lepl.domain.character.Item;
 import com.lepl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +42,17 @@ public class ExpService {
         expRepository.remove(exp);
     }
 
-    //경험치 사용
+    //레벨업에 따른 경험치 업데이트
     @Transactional //쓰기 모드
     public Exp update(Exp exp, Long pointTask, Long pointTimer) { //setter로 업데이트X
         return exp.updateExp(pointTask, pointTimer);
+    }
+
+    //아이템 구매로 인한 경험치 업데이트
+    @Transactional
+    public void updateBuyExp(Exp exp, Item item) {
+        expRepository.updateBuyItem(exp.getExpValue() - item.getPrice());
+        //여기로 넘어오기 전에 현재 경험치로 구매할 수 있는 아이템인지 확인이 필요함.
     }
 
     //매일 경험치 리셋
