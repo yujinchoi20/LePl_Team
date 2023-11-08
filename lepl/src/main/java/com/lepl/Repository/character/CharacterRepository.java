@@ -27,6 +27,13 @@ public class CharacterRepository {
         return em.find(Character.class, id);
     }
 
+    //캐릭터 화폐 업데이트
+    public void updateCoin(Long money) {
+        em.createQuery("update Character c set c.money =: money")
+                .setParameter("money", money)
+                .executeUpdate();
+    }
+
     //캐릭터 삭제
     public void remove (Long id) {
         em.remove(id);

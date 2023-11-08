@@ -16,6 +16,9 @@ public class Character {
     @Column(name = "character_id") //PK
     private Long id;
 
+    //int --> Long 변경하기
+    private int money = 0; //캐릭터 화폐, 초기화폐 0원, 현재경험치(expValue)와 같음
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "exp_id") // FK
     private Exp exp;

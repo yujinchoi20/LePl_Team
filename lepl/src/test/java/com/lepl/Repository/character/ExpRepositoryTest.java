@@ -36,7 +36,7 @@ class ExpRepositoryTest {
 
 //        expRepository.save(exp);
 
-        Exp exp = expRepository.findOne(652l);
+        Exp exp = expRepository.findOne(1l); //DB에 있는 자료 사용
 
         //When
         for(int i = 0; i < 8; i++) { //Timer 사용

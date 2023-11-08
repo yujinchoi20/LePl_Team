@@ -41,9 +41,9 @@ public class ExpRepository {
     }
 
     //아이템 구매로 인한 경험치 업데이트
-    public void updateBuyItem(Long expValue) {
-        em.createQuery("update Exp e set e.expValue =: expValue")
-                .setParameter("expValue", expValue)
+    public void updateBuyItem(Long expAll) {
+        em.createQuery("update Exp e set e.expAll =: expAll")
+                .setParameter("expAll", expAll)
                 .executeUpdate();
     }
 

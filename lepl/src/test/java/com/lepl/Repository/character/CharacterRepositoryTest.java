@@ -40,9 +40,9 @@ class CharacterRepositoryTest {
         Character character = new Character();
         character.setExp(exp); //여기서 setter를 사용하는게 맞는지 확신 없음.
 
+        /*
         for(int i = 0; i < 2; i++) {
             CharacterItem characterItem = new CharacterItem();
-            //characterItem.setItem(1l);
             characterItem.setWearingStatus(true);
             character.addCharacterItem(characterItem);
             characterItemRepository.save(characterItem);
@@ -51,6 +51,7 @@ class CharacterRepositoryTest {
             character.addFollow(follow);
             followRepository.save(follow);
         }
+        */
 
         //When
         characterRepository.save(character);
@@ -61,5 +62,22 @@ class CharacterRepositoryTest {
         log.debug("Character_EXP: {}", character.getExp());
         log.debug("Character_Follow: {}", character.getFollows().size());
         log.debug("Character_Item: {}", character.getCharacterItems().size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void 화폐_업데이트() throws Exception {
+        //Given
+        Character character = characterRepository.findOne(1l);
+        Exp exp = expRepository.findOne(1l);
+
+        //When
+        Long expAll = exp.getExpAll();
+        characterRepository.updateCoin(expAll);
+
+        //Then
+        log.debug("expAll = {}", expAll);
+        log.debug("character money = {}", character.getMoney());
     }
 }

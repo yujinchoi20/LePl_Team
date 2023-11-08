@@ -25,8 +25,8 @@ class ItemRepositoryTest {
     public void 아이템_등록() throws Exception {
         //Given
         Item item = new Item();
-        item.setType("Room");
-        item.setName("Book");
+        item.setType("Character");
+        item.setName("Glasses");
         item.setPrice(5);
         item.setPurchase_quantity(1);
         item.setStart_time(LocalDateTime.now());

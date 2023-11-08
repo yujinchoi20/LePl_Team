@@ -30,6 +30,12 @@ public class CharacterService {
         return characterRepository.findOne(id);
     }
 
+    //캐릭터 화폐 업데이트
+    @Transactional
+    public void updateCoin(Long money) {
+        characterRepository.updateCoin(money);
+    }
+
     //캐릭터 삭제
     @Transactional //쓰기 모드
     public void remove(Long id) {
