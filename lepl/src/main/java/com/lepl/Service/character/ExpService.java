@@ -49,11 +49,11 @@ public class ExpService {
     }
 
     //아이템 구매로 인한 경험치 업데이트
-    @Transactional
+    /*@Transactional
     public void updateBuyItem(Long expAll) {
         expRepository.updateBuyItem(expAll);
         //여기로 넘어오기 전에 현재 경험치로 구매할 수 있는 아이템인지 확인이 필요함.
-    }
+    }*/
 
     //매일 경험치 리셋
     @Scheduled(cron = "30 00 00 * * *") //매일 00시 00분 30초 획득 경험치 초기화

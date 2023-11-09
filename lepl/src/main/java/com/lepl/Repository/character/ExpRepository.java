@@ -41,11 +41,11 @@ public class ExpRepository {
     }
 
     //아이템 구매로 인한 경험치 업데이트
-    public void updateBuyItem(Long expAll) {
+    /*public void updateBuyItem(Long expAll) {
         em.createQuery("update Exp e set e.expAll =: expAll")
                 .setParameter("expAll", expAll)
                 .executeUpdate();
-    }
+    }*/
 
     public Member findOneWithMember(Long memberId) {
         return em.createQuery("select distinct m from Member m" +

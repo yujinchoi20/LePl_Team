@@ -29,7 +29,7 @@ class CharacterRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(false)
+    @Rollback(value = false)
     public void 캐릭터_생성() throws Exception{
         //Given
         Exp exp = new Exp();
@@ -67,7 +67,7 @@ class CharacterRepositoryTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    public void 화폐_업데이트() throws Exception {
+    public void 화폐_업데이트() throws Exception { //-> 웬만하면 경험치부분에서 더티체킹으로 해결하기!!
         //Given
         Character character = characterRepository.findOne(1l);
         Exp exp = expRepository.findOne(1l);

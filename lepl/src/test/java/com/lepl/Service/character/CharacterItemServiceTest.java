@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 @SpringBootTest
 @Slf4j
@@ -22,31 +22,52 @@ class CharacterItemServiceTest {
     @Autowired ExpRepository expRepository;
     @Autowired CharacterItemRepository characterItemRepository;
 
+    /*
+        Character 화폐가 item 가격과 같거나 많을 경우 character_item에 item을 추가한다(구매)
+        재구매 불가
+        재고 확인
+        한도 확인
+     */
     @Test
     @Rollback(value = false)
     public void 아이템_구매_가능여부() throws Exception {
         //Given
-        Item item = itemRepository.findOne(52l);
-        Character character = characterRepository.findOne(102l);
+        Item item = itemRepository.findOne(1l);
+        Character character = characterRepository.findOne(1l);
 
         CharacterItem characterItem = new CharacterItem();
         characterItem.setWearingStatus(Boolean.FALSE);
         characterItem.setCharacter(character);
 
+        int cnt = item.getPurchase_quantity(); //재고
+
         //When
-        characterItemRepository.save(characterItem);
-        CharacterItem findCharacterItem = characterItemRepository.findOne(characterItem.getId());
-        Character findCharacter = findCharacterItem.getCharacter();
-        Long expAll = findCharacter.getExp().getExpAll();
+        Long money = character.getMoney();
+        int price = item.getPrice();
+
+        Long wantItemId = item.getId();
+        List<CharacterItem> getItems = characterItemRepository.findAll();
+
+        for(CharacterItem items : getItems) {
+            if(items.getItem().getId() == wantItemId) {
+                throw new IllegalStateException("이미 소유한 아이템입니다.");
+            }
+        }
+
+        if(money >= price && cnt >= 1) {
+            characterItem.setItem(item); //아이템 구매
+            cnt -= 1; //재고 감소
+
+            characterItemRepository.save(characterItem); //캐릭터 소유 아이템 추가(캐릭터가 아이템을 구매)
+            characterRepository.updateCoin(money - price); //아이템 구매에 사용한 만큼 화폐 차감
+            item.setPurchase_quantity(cnt); //일단은 하나씩만 구매 가능
+            log.debug("remain money = {}", (money - price));
+        } else {
+            log.debug("need more money = {}", (price - money));
+            throw new IllegalStateException("아이템을 구매할 수 없습니다.(한도초과 혹은 재고부족)");
+        }
 
         //Then
-        if(expAll >= item.getPrice()) {
-            characterItem.setItem(item); //아이템 정보도 저장, Api 구현부에서 setter 사용 가능하나요..?? 일단 보류
-            expRepository.updateBuyItem(expAll-item.getPrice()); //아이템 구매인한 경험치 업데이트
-            log.debug("GET ITEM = {}", item.getPrice());
-            log.debug("Character item = {}", characterItem.getItem().getName());
-        } else {
-            log.debug("MORE NEED EXP = {}", (item.getPrice() - expAll));
-        }
+        log.debug("아이템 구매 가능 여부 확인 및 구매/반환");
     }
 }
