@@ -25,18 +25,41 @@ public class CharacterItemRepository {
         }
     }
 
-    //아이템 1개 조회
+    //아이템 구매
+    public void addItem(Long itemId) {
+        em.createQuery("update CharacterItem c set c.itemId =: itemId")
+                .setParameter("itemId", itemId)
+                .executeUpdate();
+    }
+
+    //캐릭터 아이템 1개 조회
     public CharacterItem findOne(Long id) {
         return em.find(CharacterItem.class, id);
     }
 
-    //전체 아이텀 조회
+    //전체 캐릭터 아이템 조회
     public List<CharacterItem> findAll() {
-        return em.createQuery("select i from CharacterItem i", CharacterItem.class)
+        return em.createQuery("select c from CharacterItem c", CharacterItem.class)
                 .getResultList();
     }
 
-    //소유 아이템 삭제
+    public void updateStatus(Long characterItemId, int status) {
+        if(status == 1) {
+            em.createQuery("update CharacterItem c set c.wearingStatus = :wearingStatus" +
+                            " where c.id = :characterItemId")
+                    .setParameter("wearingStatus", true)
+                    .setParameter("characterItemId", characterItemId)
+                    .executeUpdate();
+        } else {
+            em.createQuery("update CharacterItem c set c.wearingStatus = :wearingStatus" +
+                            " where c.id = :characterItemId")
+                    .setParameter("wearingStatus", false)
+                    .setParameter("characterItemId", characterItemId)
+                    .executeUpdate();
+        }
+    }
+
+    //소유 캐릭터 아이템 삭제
     public void remove(CharacterItem characterItem) {
         em.remove(characterItem);
     }

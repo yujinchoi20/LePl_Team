@@ -32,6 +32,12 @@ public class ItemRepository {
                 .getResultList();
     }
 
+    public int updatePurchase(int purchase_quantity) {
+        return em.createQuery("update Item i set i.purchase_quantity =: purchase_quantity")
+                .setParameter("purchase_quantity", purchase_quantity)
+                .executeUpdate();
+    }
+
     public void remove(Item item) {
         em.remove(item);
     }

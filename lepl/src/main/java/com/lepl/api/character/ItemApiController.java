@@ -26,9 +26,6 @@ import java.util.stream.Collectors;
 public class ItemApiController {
 
     private final ItemService itemService;
-    private final ExpService expService;
-    private final CharacterService characterService;
-    private final CharacterItemService characterItemService;
 
     /*
         등록된 특정 아이템 조회

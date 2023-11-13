@@ -41,6 +41,11 @@ public class ItemService {
     }
 
     @Transactional
+    public int updatePurchase(int purchase_quantity) {
+        return itemRepository.updatePurchase(purchase_quantity);
+    }
+
+    @Transactional
     public void remove(Item item) {
         itemRepository.remove(item);
     }

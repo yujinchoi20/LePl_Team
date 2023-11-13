@@ -36,14 +36,26 @@ public class CharacterItemService {
         characterItemRepository.save(characterItem);
     }
 
-    //아이템 1개 조회
+    //아이템 구매
+    @Transactional
+    public void addItem(Long itemId) {
+        characterItemRepository.addItem(itemId);
+    }
+
+    //캐릭터 아이템 1개 조회
     public CharacterItem findOnd(Long id) {
         return characterItemRepository.findOne(id);
     }
 
-    //아이템 전체 조회
+    //캐릭터 아이템 전체 조회
     public List<CharacterItem> findAll() {
         return characterItemRepository.findAll();
+    }
+
+    //아이템 착용 여부
+    @Transactional
+    public void updateStatus(Long characterItemId, int status) {
+        characterItemRepository.updateStatus(characterItemId, status);
     }
 
     //소유 아이템 삭제

@@ -32,7 +32,7 @@ class CharacterItemServiceTest {
     @Rollback(value = false)
     public void 아이템_구매_가능여부() throws Exception {
         //Given
-        Item item = itemRepository.findOne(1l);
+        Item item = itemRepository.findOne(2l);
         Character character = characterRepository.findOne(1l);
 
         CharacterItem characterItem = new CharacterItem();
@@ -69,5 +69,20 @@ class CharacterItemServiceTest {
 
         //Then
         log.debug("아이템 구매 가능 여부 확인 및 구매/반환");
+    }
+
+    @Test
+    @Rollback(value = false)
+    public void 아이템_착용여부_변경() throws Exception {
+        //Given
+        CharacterItem characterItem = characterItemRepository.findOne(52l);
+        Long itemId = characterItem.getItem().getId();
+        log.debug("itemID = {}", itemId);
+
+        //When
+        characterItemRepository.updateStatus(characterItem.getId(), 0);
+
+        //Then
+        log.debug("item status = {}", characterItem.getWearingStatus());
     }
 }
