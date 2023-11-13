@@ -1,15 +1,10 @@
 package com.lepl.api.character;
 
-import com.lepl.Service.character.CharacterItemService;
-import com.lepl.Service.character.CharacterService;
-import com.lepl.Service.character.ExpService;
 import com.lepl.Service.character.ItemService;
 import com.lepl.domain.character.Item;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +26,32 @@ public class ItemApiController {
         등록된 특정 아이템 조회
         Item 형태로 받기
      */
-    @GetMapping("/{itemId}")
+    @GetMapping("/find/id/{itemId}")
     public Item findItem(@PathVariable("itemId") Long itemId) {
         Item item = itemService.findOne(itemId);
         log.debug("item = {}", item);
+
+        if(item == null) {
+            throw new IllegalStateException("해당 아이템이 존재하지 않습니다.");
+        }
         log.debug("item id = {}", itemId);
+
+        return item;
+    }
+
+    /*
+        등록된 아이템 이름으로 조회
+     */
+    @GetMapping("/find/name/{itemName}")
+    public Item findItemByName(@PathVariable("itemName") String itemName) {
+        Item item = itemService.findByName(itemName);
+        log.debug("item = {}", item);
+
+        if(item == null) {
+            throw new IllegalStateException("해당 아이템이 존재하지 않습니다.");
+        }
+        log.debug("item name = {}", item.getName());
+
         return item;
     }
 

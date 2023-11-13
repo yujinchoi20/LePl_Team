@@ -27,6 +27,14 @@ public class ItemRepository {
         return em.find(Item.class, id);
     }
 
+    //아이템 이름으로 검색
+    public Item findByName(String name) {
+        return (Item) em.createQuery("select i from Item i" +
+                " where i.name =: name")
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
     public List<Item> findAll() {
         return em.createQuery("select i from Item i")
                 .getResultList();

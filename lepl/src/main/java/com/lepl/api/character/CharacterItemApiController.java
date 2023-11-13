@@ -29,7 +29,7 @@ public class CharacterItemApiController {
     private final ItemService itemService;
 
     /*
-        아이템 구매
+        아이템 구매 버튼
      */
     @PostMapping("/buy/{itemId}")
     public ResponseEntity<String> buyItem(@PathVariable("itemId") Long itemId, @Login Long memberId) {
@@ -77,7 +77,7 @@ public class CharacterItemApiController {
     }
 
     /*
-        아이템 착용
+        아이템 착용 여부 변경
         아이템 착용o -> 1
         아이템 착용x -> 0
      */
@@ -97,9 +97,9 @@ public class CharacterItemApiController {
 
         if(characterItem != null) { //아이템 소유중
             if(status == 1) { //사용o
-
-            } else { //사용x`
-
+                characterItemService.updateStatus(characterItem.getId(), status);
+            } else { //사용x
+                characterItemService.updateStatus(characterItem.getId(), status);
             }
         } else {
             throw new IllegalStateException("소유한 아이템이 아닙니다.");

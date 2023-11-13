@@ -36,6 +36,9 @@ public class ItemService {
         return itemRepository.findOne(id);
     }
 
+    public Item findByName(String name) {
+        return itemRepository.findByName(name);
+    }
     public List<Item> findAll() {
         return itemRepository.findAll();
     }
