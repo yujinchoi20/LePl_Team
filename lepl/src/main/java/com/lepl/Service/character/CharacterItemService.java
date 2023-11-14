@@ -43,7 +43,7 @@ public class CharacterItemService {
     }
 
     //캐릭터 아이템 1개 조회
-    public CharacterItem findOnd(Long id) {
+    public CharacterItem findOne(Long id) {
         return characterItemRepository.findOne(id);
     }
 

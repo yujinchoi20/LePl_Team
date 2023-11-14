@@ -80,8 +80,9 @@ public class CharacterItemApiController {
         아이템 착용 여부 변경
         아이템 착용o -> 1
         아이템 착용x -> 0
+        Item Type에 따라(Room, Character) putItem, wearItem으로 구분해도 될거 같음!
      */
-    @GetMapping("/put/{itemId}/{status}") //Room Item 사용여부
+    @GetMapping("/put/{itemId}/{status}")
     public ResponseEntity<String> putItem(@PathVariable("itemId") Long itemId, @PathVariable("status") int status, @Login Long memberId) {
         Member member = memberService.findOne(memberId);
         Character character = member.getCharacter();
