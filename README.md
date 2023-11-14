@@ -23,6 +23,28 @@
 #### 4. 테이블 설계
 ![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/73cd0ba8-b791-4162-bfef-bb1a76853dbf)
 ------------------
+
+### 11/14
+
+__[Item}__
+* __Item Domain__: id, type, name, price, purchase_quantity, start_time, end_time
+* __Item Repository__: save(), findOne(), findByName(), findAll(), updatePurcharse(), remove()
+* __Item Service__: save(), findOne(), findByName(), findAll(), updatePurcharse(), remove()
+* __Item ApiController__: "api/v1/item"
+    * findItem(): GetMapping, itemId로 아이템 조회, "/find/id/{itemId}"
+    * findItemByName(): GetMapping, itemName으로 아이템 조회, "/find/name/{itemName}"
+    * findItems(): 아이템 전체 조회, "/all"
+
+__[Character]__
+* __Character Domain__: Long money 필드 추가
+* __Character Repo/Service__: updateCoint(Long money) 추가, 아이템 구매 시 화폐 차감, CharacterItemApiController에서 사용됨
+
+__[Character_Item]__
+* __Character_Item Repo/Service__: updateStatus(Long CharacterId, int status) 추가, 아이템 착용 여부 변경, status == 1 아이템 착용/status == 0 아이템 미착용
+* __Character_Item ApiController__: "api/v1/characterItem"
+    * buyItem(): PostMapping, 아이템 구매 버튼, "/buy/{itemId}"
+    * putItem(): GetMapping, 아이템 착용 버튼. "/put/{itemId}/{status}"
+
 ### 11/06
 
 __Item 테이블 추가__
