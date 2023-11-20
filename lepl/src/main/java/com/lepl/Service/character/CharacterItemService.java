@@ -36,12 +36,6 @@ public class CharacterItemService {
         characterItemRepository.save(characterItem);
     }
 
-    //아이템 구매
-    @Transactional
-    public void addItem(Long itemId) {
-        characterItemRepository.addItem(itemId);
-    }
-
     //캐릭터 아이템 1개 조회
     public CharacterItem findOne(Long id) {
         return characterItemRepository.findOne(id);

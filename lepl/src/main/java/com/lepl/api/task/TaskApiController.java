@@ -36,17 +36,28 @@ public class TaskApiController {
     public String create(@Login Long memberId, @RequestBody CreateTaskRequestDto request) {
         Lists lists = null;
         List<Lists> listsList = listsService.findByCurrent(memberId, request.startTime); // db 에 기존 lists+member 가 있나 확인 (startTime, id 로 확인)
+
         // lists 가 없을 경우
         if(listsList.isEmpty()) { 
             Member member = memberService.findOne(memberId);
-            lists = Lists.createLists(member, request.startTime, new ArrayList<Task>());
+            lists = Lists.createLists(member
+                    , request.startTime
+                    , new ArrayList<Task>());
+        } else { // lists 가 있을 경우
+            lists = listsList.get(0);
         }
-        // lists 가 있을 경우
-        else lists = listsList.get(0);
         listsService.join(lists);
 
+        LocalDateTime start = request.startTime;
+        LocalDateTime end = request.endTime;
+        LocalDateTime remain = end.minusHours(start.getHour()).minusMinutes(start.getMinute()); //모든 일정이 하루안에 끝난다고 가정
+        request.remainTime = Long.valueOf(((remain.getHour()*60) + remain.getMinute()));
+        //분으로 표시 = hour*60 + minutes
+
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
-        Task task = Task.createTask(request.content, request.startTime, request.endTime, taskStatus);
+        Task task = Task.createTask(request.content
+                , request.startTime
+                , request.endTime, taskStatus, request.remainTime);
         lists.addTask(task); // 일정 추가
 
         taskStatusService.join(taskStatus);
@@ -71,11 +82,20 @@ public class TaskApiController {
      * (변경 감지를 사용해서 데이터를 수정) => 더티체킹
      */
     @PostMapping(value = "/member/update")
-    public ResponseEntity<String> update(@Login Long memberId, @RequestBody UpdateTaskRequestDto request) {
+    public ResponseEntity<String> update(@Login Long memberId
+            , @RequestBody UpdateTaskRequestDto request) {
+
         List<Task> tasks = taskService.findOneWithMember(memberId, request.getTaskId());
-        if(tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
-        taskService.update(tasks.get(0), request.content, request.startTime, request.endTime); // 변경 감지
-        return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 수정되었습니다."); // 200
+
+        if(tasks.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("이미 삭제된 일정입니다."); // 404
+        }
+
+        taskService.update(tasks.get(0), request.content
+                , request.startTime, request.endTime); // 변경 감지
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("해당 일정이 수정되었습니다."); // 200
     }
 
 
@@ -85,6 +105,7 @@ public class TaskApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+        private Long remainTime;
     }
     @Getter
     static class DeleteTaskRequestDto {

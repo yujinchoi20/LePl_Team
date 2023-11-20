@@ -32,7 +32,9 @@ public class MemberApiController {
      * uid로 조회 후 세션Id 응답 쿠키
      */
     @PostMapping("/login") // 입력 => json 이용
-    public ResponseEntity<String> login(@RequestBody @Valid LoginMemberRequestDto LoginRequest, HttpServletRequest request){
+    public ResponseEntity<String> login(@RequestBody @Valid LoginMemberRequestDto LoginRequest
+            , HttpServletRequest request){
+
         Member loginMember = memberService.findByUid(LoginRequest.getUid());
         if(loginMember==null) { // 회원 아닌경우
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 아닙니다."); // 404 : Not Found
@@ -44,7 +46,8 @@ public class MemberApiController {
         // 세션에 로그인 회원 정보 보관
         session.setAttribute("login_member", loginMember.getId());
 
-        return ResponseEntity.status(HttpStatus.OK).body("회원 인증 완료"); // 200 : OK, 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("회원 인증 완료"); // 200 : OK, 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
     }
     // test용 GET (웹에서 쿠키 확인)
     @GetMapping("/login/{uid}")
@@ -64,7 +67,8 @@ public class MemberApiController {
      * 이후 세션Id를 응답 쿠키
      */
     @PostMapping("/register") // 입력 => json 이용
-    public ResponseEntity<RegisterMemberResponseDto> saveMember(@RequestBody @Valid RegisterMemberRequestDto request) {
+    public ResponseEntity<RegisterMemberResponseDto> saveMember(
+            @RequestBody @Valid RegisterMemberRequestDto request) {
         Member member = new Member();
         member.setUid(request.getUid());
         member.setNickname(request.getNickname());
@@ -76,12 +80,14 @@ public class MemberApiController {
         characterService.save(character);
         member.setCharacter(character);
 
-        memberService.join(member);
-
         // 중복회원 처리
         memberService.validateDuplicateMember(member);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterMemberResponseDto(member));
+        // 회원 정보 저장
+        memberService.join(member);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new RegisterMemberResponseDto(member));
     }
 
     /**

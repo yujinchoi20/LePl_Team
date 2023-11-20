@@ -66,11 +66,11 @@ class CharacterRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void 화폐_업데이트() throws Exception { //-> 웬만하면 경험치부분에서 더티체킹으로 해결하기!!
         //Given
-        Character character = characterRepository.findOne(1l);
-        Exp exp = expRepository.findOne(1l);
+        Character character = characterRepository.findOne(52l);
+        Exp exp = expRepository.findOne(52l);
 
         //When
         Long expAll = exp.getExpAll();

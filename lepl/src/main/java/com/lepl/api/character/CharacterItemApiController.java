@@ -41,6 +41,7 @@ public class CharacterItemApiController {
         CharacterItem characterItem = new CharacterItem();
         characterItem.setWearingStatus(Boolean.FALSE);
         characterItem.setCharacter(character);
+        log.debug("캐릭터 확인용 = {}", character.getId());
 
         int cnt = item.getPurchase_quantity(); //현재 재고 확인
         Long money = character.getMoney(); //보유 화폐
@@ -50,14 +51,14 @@ public class CharacterItemApiController {
         List<CharacterItem> items = characterItemService.findAll(); //사용자 소유 아이템
 
         for(CharacterItem i : items) {
-            if(i.getItem().getId() == wantItemId) { //만약 이미 해당 아이템을 소유하고 있다면
+            if(i.getItem().getId() == wantItemId && i.getCharacter().getId() == character.getId()) { //만약 이미 해당 아이템을 소유하고 있다면
                 throw new IllegalStateException("이미 소유한 아이템입니다.");
             }
         }
 
         if(money >= price) { //현재 보유한 화폐로 아이템을 구매할 수 있다면
             if(cnt >= 1) { //재고 수량이 있다면
-                characterItemService.addItem(item.getId()); //아이템 정보 추가
+                characterItem.setItem(item);
                 characterItemService.save(characterItem); //아이템까지 추가해서 저장
                 characterService.updateCoin(money - price); //아이템 구매로 인한 화폐 차감 -> 더티체킹
                 itemService.updatePurchase(cnt - 1); //아이템은 1개씩 구매 가능

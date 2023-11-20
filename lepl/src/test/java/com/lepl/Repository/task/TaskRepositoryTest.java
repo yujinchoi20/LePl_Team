@@ -1,5 +1,9 @@
 package com.lepl.Repository.task;
 
+import com.lepl.Repository.character.CharacterRepository;
+import com.lepl.Repository.character.ExpRepository;
+import com.lepl.Service.character.ExpService;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
 import com.lepl.domain.task.TaskStatus;
@@ -25,29 +29,32 @@ public class TaskRepositoryTest {
     ListsRepository listsRepository;
     @Autowired
     EntityManager em;
+    @Autowired
+    ExpRepository expRepository;
+    @Autowired
+    CharacterRepository characterRepository;
 
     @Test
     @Transactional // 자동 롤백
-    @Rollback(false) // deleteTask() 테스트 위해 잠시 롤백 제거
+    //@Rollback(false) // deleteTask() 테스트 위해 잠시 롤백 제거
     public void save_find_test() throws Exception {
         // given
         Lists lists = listsRepository.findOne(1l);
         //TaskStatus taskStatus = new TaskStatus();
         Task task1 = new Task();
-        Task task2 = new Task();
 
         task1.setContent("test1");
-        task2.setContent("test2");
         task1.setStartTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 18, 00, 00));
         task1.setEndTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 20, 00, 00));
-        task2.setStartTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 20, 00, 00));
-        task2.setEndTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 22, 00, 00));
         task1.setLists(lists);
-        task2.setLists(lists);
+
+        LocalDateTime start = task1.getStartTime();
+        LocalDateTime end = task1.getEndTime();
+        LocalDateTime remain = end.minusHours(start.getHour()).minusMinutes(start.getMinute()); //모든 일정이 하루안에 끝난다고 가정
+        System.out.println("REMAIN = " + (remain.getHour()*60 + remain.getMinute()));
 
         // when
         taskRepository.save(task1);
-        taskRepository.save(task2);
 
         Task getTask = taskRepository.findOne(task1.getId());
         List<Task> list = taskRepository.findAll();
@@ -83,5 +90,31 @@ public class TaskRepositoryTest {
         if(!list.isEmpty()) {
             for(Task t : list) System.out.println(t.getId()); // 2
         }
+    }
+
+    @Test
+    @Transactional
+    public void 경험치_업데이트() throws Exception {
+        //Given
+        Task task = new Task();
+        TaskStatus taskStatus = new TaskStatus();
+        Lists lists = new Lists();
+
+        taskStatus.setCompletedStatus(false);
+        taskStatus.setTimerOnOff(false);
+        task.setContent("Exp Update");
+        task.setStartTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 18, 00, 00));
+        task.setEndTime(LocalDateTime.of(2023, Month.OCTOBER, 12, 20, 00, 00));
+        task.setLists(lists);
+        task.setTaskStatus(taskStatus);
+
+        taskRepository.save(task);
+
+        //When
+        taskStatus.setCompletedStatus(true);
+        task.setTaskStatus(taskStatus);
+
+        //Then
+
     }
 }

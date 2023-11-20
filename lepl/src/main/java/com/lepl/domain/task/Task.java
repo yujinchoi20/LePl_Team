@@ -16,7 +16,7 @@ public class Task {
     private String content;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Long remainTime = 0L;
+    private Long remainTime = 0L; //minute
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // 1:1관계며 같이 존재함. (생명주기 같아야함)
     @JoinColumn(name = "task_status_id")
@@ -27,12 +27,14 @@ public class Task {
     private Lists lists;
 
     //==생성 편의 메서드==//
-    public static Task createTask(String content, LocalDateTime startTime, LocalDateTime endTime, TaskStatus taskStatus) {
+    public static Task createTask(String content, LocalDateTime startTime, LocalDateTime endTime, TaskStatus taskStatus, Long remainTime) {
         Task task = new Task();
         task.content = content;
         task.startTime = startTime;
         task.endTime = endTime;
         task.taskStatus = taskStatus;
+        task.remainTime = remainTime;
+
         return task;
     }
 }

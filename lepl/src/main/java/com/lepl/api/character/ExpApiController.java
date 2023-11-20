@@ -6,6 +6,7 @@ import com.lepl.Service.member.MemberService;
 import com.lepl.Service.task.ListsService;
 import com.lepl.Service.task.TaskService;
 import com.lepl.api.argumentresolver.Login;
+import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Task;
@@ -63,10 +64,13 @@ public class ExpApiController {
             return null;
         }
 
-        Exp exp = member.getCharacter().getExp();;
+        //화폐 업데이트를 위해 사용
+        Character character = member.getCharacter();
+        Long money = character.getMoney();
+
+        Exp exp = member.getCharacter().getExp();
         Long pointTimer = 0L;
         Long pointTask = 0L;
-
         log.debug("기존 exp? : {}", exp.getExpAll());
 
         List<Task> tasks = new ArrayList<>();
@@ -81,7 +85,7 @@ public class ExpApiController {
             }
             if(!task.getTaskStatus().getTimerOnOff()) {
                 TaskStatus taskStatus = TaskStatus.createTaskStatus(true, false);
-                taskService.updateStatus(task, taskStatus, null);
+                taskService.updateStatus(task, taskStatus, 0l);
                 pointTask++;
                 log.debug("확인용 pointTask : {}", pointTask);
             }
@@ -89,6 +93,7 @@ public class ExpApiController {
 
         //경험치 업데이트
         expService.update(exp, pointTask, pointTimer); //더티 체킹
+        characterService.updateCoin(money + pointTask); //더티 체킹
 
         return ResponseEntity.status(HttpStatus.OK).body("일정을 완료하였습니다."); //200
     }
@@ -105,6 +110,10 @@ public class ExpApiController {
         if(member == null || task == null) {
             return null;
         }
+
+        //화폐 업데이트를 위해 사용
+        Character character = member.getCharacter();
+        Long money = character.getMoney();
 
         Exp exp = member.getCharacter().getExp();
         Long pointTimer = 0L;
@@ -151,6 +160,8 @@ public class ExpApiController {
 
         //경험치 업데이트
         expService.update(exp, pointTask, pointTimer); //더티 체킹
+        characterService.updateCoin(money + pointTask + pointTimer); //더티 체킹
+
         return ResponseEntity.status(HttpStatus.OK).body("일정을 완료하였습니다."); //200
     }
 

@@ -21,7 +21,7 @@ public class ApiConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MemberCheckInterceptor())
-                .order(2)
+                .order(2) //2번째로 실행될 인터셉터를 설정
                 .addPathPatterns("/**") // 모든 경로 접근
                 .excludePathPatterns("/", "/api/v1/members/login", "/api/v1/members/register",
                         "/api/v1/members/logout","/css/**","/*.ico","/error", "/api/v1/item/**"); // 제외 경로!

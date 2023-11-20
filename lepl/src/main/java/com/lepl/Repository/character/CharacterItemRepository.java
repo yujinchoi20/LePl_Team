@@ -25,13 +25,6 @@ public class CharacterItemRepository {
         }
     }
 
-    //아이템 구매
-    public void addItem(Long itemId) {
-        em.createQuery("update CharacterItem c set c.itemId =: itemId")
-                .setParameter("itemId", itemId)
-                .executeUpdate();
-    }
-
     //캐릭터 아이템 1개 조회
     public CharacterItem findOne(Long id) {
         return em.find(CharacterItem.class, id);
