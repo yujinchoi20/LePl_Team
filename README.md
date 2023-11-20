@@ -24,6 +24,20 @@
 ![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/73cd0ba8-b791-4162-bfef-bb1a76853dbf)
 ------------------
 
+### 11/20
+__[Task]__
+* remainItme 수정(타이머 사용안할 때): 일정 등록할 때, 계획한 시간만큼 LocalDateTime을 계산해서 remainTime을 초기화함 -> 일정 완료 시, remainTime을 0으로 업데이트 진행
+
+__[캐릭터 화폐]__
+* 사용자가 일정을 완료했을 때 경험치를 획득함. 경험치 획득에 따라 캐릭터 화폐도 얻어야 됨. expApi 부분에 캐릭터 화폐 더티체킹 추가! (단, 경험치 하루 최대 획득량과는 무관하게 일정 완료시 화폐는 증가하도록 함)
+
+__[Character_Item]__
+* Repository, Service에 addItem() 기능은 save와 중복되는 기능이라서 삭제함.
+
+__[추가 고려 사항]__
+* 이미 구매한 아이템의 경우 --> Character_Item 테이블 구조상 다른 캐릭터가 아이템을 구매 했을 때, FK 중복이 일어남... 개선이 필요함!
+------------------
+
 ### 11/14
 
 __[Item}__
