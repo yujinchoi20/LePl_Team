@@ -75,14 +75,59 @@ class CharacterItemServiceTest {
     @Rollback(value = false)
     public void 아이템_착용여부_변경() throws Exception {
         //Given
-        CharacterItem characterItem = characterItemRepository.findOne(52l);
-        Long itemId = characterItem.getItem().getId();
-        log.debug("itemID = {}", itemId);
+        Item item = itemRepository.findOne(252l);
+        Character character = characterRepository.findOne(1l);
+        int status = 0;
+
+        List<CharacterItem> characterItems = character.getCharacterItems();
+        CharacterItem characterItem = null;
+
+        for(CharacterItem c : characterItems) {
+            if (c.getItem().getId() == item.getId()) {
+                characterItem = c;
+                break;
+            }
+        }
 
         //When
-        characterItemRepository.updateStatus(characterItem.getId(), 0);
+        if(characterItem == null) {
+            throw new IllegalStateException("소유한 아이템이 아닙니다.");
+        } else {
+            //더티체킹으로 할 필요가 있음
+            if(status == 1) {
+                characterItemRepository.updateStatus(characterItem.getId(), status);
+            } else {
+                characterItemRepository.updateStatus(characterItem.getId(), status);
+            }
+        }
 
         //Then
-        log.debug("item status = {}", characterItem.getWearingStatus());
+        log.debug("착용 여부 {}", characterItem.getWearingStatus());
+    }
+
+    @Test
+    @Transactional
+    public void 착용여부_확인() throws Exception{
+        //Given
+        Item item = itemRepository.findOne(252l);
+        Character character = characterRepository.findOne(1l);
+        int status = 1;
+
+        List<CharacterItem> characterItems = character.getCharacterItems();
+        CharacterItem characterItem = null;
+
+        //When
+        for(CharacterItem c : characterItems) {
+            if (c.getItem().getId() == item.getId()) {
+                characterItem = c;
+                break;
+            }
+        }
+
+        //Then
+        if(!characterItem.getWearingStatus() && status == 0 ||
+            characterItem.getWearingStatus() && status == 1) {
+            log.debug("상태 변경 안됨 {}", characterItem.getWearingStatus());
+        }
     }
 }

@@ -21,10 +21,6 @@ public class CharacterItemService {
 
     @Autowired
     CharacterItemRepository characterItemRepository;
-    @Autowired
-    ExpRepository expRepository;
-    @Autowired
-    CharacterRepository characterRepository;
 
     /*
         save, findOne, findAll, remove
@@ -44,6 +40,11 @@ public class CharacterItemService {
     //캐릭터 아이템 전체 조회
     public List<CharacterItem> findAll() {
         return characterItemRepository.findAll();
+    }
+
+    //사용자 소유 아이템 전체 조회
+    public List<CharacterItem> findAllWithMemberItem(Long characterId) {
+        return characterItemRepository.findAllWithMemberItem(characterId);
     }
 
     //아이템 착용 여부

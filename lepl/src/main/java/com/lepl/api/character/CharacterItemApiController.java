@@ -9,6 +9,7 @@ import com.lepl.domain.character.Character;
 import com.lepl.domain.character.CharacterItem;
 import com.lepl.domain.character.Item;
 import com.lepl.domain.member.Member;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -83,30 +85,70 @@ public class CharacterItemApiController {
         아이템 착용x -> 0
         Item Type에 따라(Room, Character) putItem, wearItem으로 구분해도 될거 같음!
      */
-    @GetMapping("/put/{itemId}/{status}")
+    @PostMapping("/put/{itemId}/{status}")
     public ResponseEntity<String> putItem(@PathVariable("itemId") Long itemId, @PathVariable("status") int status, @Login Long memberId) {
         Member member = memberService.findOne(memberId);
         Character character = member.getCharacter();
+        Item item = itemService.findOne(itemId);
+
         List<CharacterItem> characterItems = character.getCharacterItems();
         CharacterItem characterItem = null;
 
         for(CharacterItem c : characterItems) {
-            if(c.getItem().getId() == itemId) { //캐릭터가 아이템을 보유하고 있다면
+            if(c.getItem().getId() == item.getId()) { //캐릭터가 아이템을 보유하고 있다면
                 characterItem = c;
                 break; //어차피 해당 아이템은 사용자 한 명 당 1개면 소유할 수 있기에 찾으면 바로 탈출
             }
         }
+        log.debug("소유 아이템 {}", characterItem.getItem().getName());
+        log.debug("상태 변경 {}", characterItem.getWearingStatus());
 
+        //if문 나열로 코드 설계가 이뤄짐 -> 리팩토링이 필요할 듯...
         if(characterItem != null) { //아이템 소유중
-            if(status == 1) { //사용o
-                characterItemService.updateStatus(characterItem.getId(), status);
-            } else { //사용x
-                characterItemService.updateStatus(characterItem.getId(), status);
+            if(!characterItem.getWearingStatus() && status == 0 ||
+                characterItem.getWearingStatus() && status == 1) {
+                throw new IllegalStateException("변경된 상태가 없습니다.");
+            } else {
+                if(status == 1) { //사용o
+                    characterItemService.updateStatus(characterItem.getId(), status);
+                } else { //사용x
+                    characterItemService.updateStatus(characterItem.getId(), status);
+                }
             }
-        } else {
+        } else { //아이템 소유하지 않음, 구매 필요
             throw new IllegalStateException("소유한 아이템이 아닙니다.");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("아이템 착용여부 변경 완료했습니다.");
+    }
+
+    /*
+        사용자 소유 아이템 전체 조회
+     */
+    @PostMapping("/member/items")
+    public List<CharacterItemDto> findMemberItems(@Login Long memberId) {
+        Member member = memberService.findOne(memberId);
+        Character character = member.getCharacter();
+
+        log.debug("캐릭터 아이디 = {}", character.getId());
+        List<CharacterItem> lists = characterItemService.findAllWithMemberItem(character.getId());
+        List<CharacterItemDto> result = lists.stream()
+                .map(o -> new CharacterItemDto(o))
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
+    @Getter
+    static class CharacterItemDto{
+        private Long characterItemId;
+        private Long itemId;
+        private Boolean wearingStatus;
+
+        public CharacterItemDto(CharacterItem characterItem) {
+            characterItemId = characterItem.getId();
+            itemId = characterItem.getItem().getId();
+            wearingStatus = characterItem.getWearingStatus();
+        }
     }
 }

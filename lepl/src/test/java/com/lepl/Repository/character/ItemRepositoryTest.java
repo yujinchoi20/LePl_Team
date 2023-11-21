@@ -21,14 +21,15 @@ class ItemRepositoryTest {
     ItemRepository itemRepository;
 
     @Test
+    @Transactional
     @Rollback(value = false)
     public void 아이템_등록() throws Exception {
         //Given
         Item item = new Item();
-        item.setType("Room");
-        item.setName("Bed");
-        item.setPrice(8);
-        item.setPurchase_quantity(1);
+        item.setType("Character");
+        item.setName("Outer");
+        item.setPrice(1);
+        item.setPurchase_quantity(99);
         item.setStart_time(LocalDateTime.now());
 
         //When
