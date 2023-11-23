@@ -41,6 +41,11 @@ __[시나리오 테스트]__
 7. 아이템 착용 및 배치
 8. 로그아웃
 ------------------
+### 11/23
+__[CharacterItem]__
+* item 객체와 연관관계 매핑 제거, itemId FK 제거
+* 아이템 구매 시, 캐릭터 화폐와 아이템 재고 갱신 오류 수정 -> Repository 파일에서 update query문에 where절을 추가함으로써 문제 해결
+* CharacterItemApiController: CharacterItem 도메인에 createCharacterItem를 추가해 객체 생성 메서드를 생성 -> Api에 setter 사용을 막음
 
 ### 11/20
 __[Task]__
