@@ -28,9 +28,11 @@ public class CharacterRepository {
     }
 
     //캐릭터 화폐 업데이트
-    public void updateCoin(Long money) {
-        em.createQuery("update Character c set c.money =: money")
+    public void updateCoin(Long money, Long characterId) {
+        em.createQuery("update Character c set c.money =: money" +
+                        " where c.id =: characterId")
                 .setParameter("money", money)
+                .setParameter("characterId", characterId)
                 .executeUpdate();
     }
 

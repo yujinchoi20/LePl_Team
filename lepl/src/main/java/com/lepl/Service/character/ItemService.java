@@ -44,8 +44,8 @@ public class ItemService {
     }
 
     @Transactional
-    public int updatePurchase(int purchase_quantity) {
-        return itemRepository.updatePurchase(purchase_quantity);
+    public int updatePurchase(int purchase_quantity, Long itemId) {
+        return itemRepository.updatePurchase(purchase_quantity, itemId);
     }
 
     @Transactional

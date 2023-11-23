@@ -39,11 +39,7 @@ public class CharacterItemApiController {
         Member member = memberService.findOne(memberId);
         Long characterId = member.getCharacter().getId();
         Character character = characterService.findOne(characterId);
-
-        CharacterItem characterItem = new CharacterItem();
-        characterItem.setWearingStatus(Boolean.FALSE);
-        characterItem.setCharacter(character);
-        log.debug("캐릭터 확인용 = {}", character.getId());
+        CharacterItem characterItem; //아이템을 구매할 수 있는 조건이라면 createCharacterItem 을 통해 객체 생성
 
         int cnt = item.getPurchase_quantity(); //현재 재고 확인
         Long money = character.getMoney(); //보유 화폐
@@ -53,17 +49,17 @@ public class CharacterItemApiController {
         List<CharacterItem> items = characterItemService.findAll(); //사용자 소유 아이템
 
         for(CharacterItem i : items) {
-            if(i.getItem().getId() == wantItemId && i.getCharacter().getId() == character.getId()) { //만약 이미 해당 아이템을 소유하고 있다면
+            if(i.getItemId() == wantItemId && i.getCharacter().getId() == character.getId()) { //만약 이미 해당 아이템을 소유하고 있다면
                 throw new IllegalStateException("이미 소유한 아이템입니다.");
             }
         }
 
         if(money >= price) { //현재 보유한 화폐로 아이템을 구매할 수 있다면
-            if(cnt >= 1) { //재고 수량이 있다면
-                characterItem.setItem(item);
+            if(cnt >= 1) { //재고 수량이 있다면 -> 이 조건에 해당되어야만 아이템을 구매할 수 있음!!
+                characterItem = CharacterItem.createCharacterItem(character, Boolean.FALSE, wantItemId);
                 characterItemService.save(characterItem); //아이템까지 추가해서 저장
-                characterService.updateCoin(money - price); //아이템 구매로 인한 화폐 차감 -> 더티체킹
-                itemService.updatePurchase(cnt - 1); //아이템은 1개씩 구매 가능
+                characterService.updateCoin(money - price, characterId); //아이템 구매로 인한 화폐 차감 -> 더티체킹
+                itemService.updatePurchase(cnt - 1, itemId); //아이템은 1개씩 구매 가능
 
                 log.debug("remain money = {}", (money - price));
                 log.debug("remain purchase quantity = {}", cnt);
@@ -95,12 +91,12 @@ public class CharacterItemApiController {
         CharacterItem characterItem = null;
 
         for(CharacterItem c : characterItems) {
-            if(c.getItem().getId() == item.getId()) { //캐릭터가 아이템을 보유하고 있다면
+            if(c.getItemId() == item.getId()) { //캐릭터가 아이템을 보유하고 있다면
                 characterItem = c;
                 break; //어차피 해당 아이템은 사용자 한 명 당 1개면 소유할 수 있기에 찾으면 바로 탈출
             }
         }
-        log.debug("소유 아이템 {}", characterItem.getItem().getName());
+        log.debug("소유 아이템 {}", characterItem.getItemId());
         log.debug("상태 변경 {}", characterItem.getWearingStatus());
 
         //if문 나열로 코드 설계가 이뤄짐 -> 리팩토링이 필요할 듯...
@@ -147,7 +143,7 @@ public class CharacterItemApiController {
 
         public CharacterItemDto(CharacterItem characterItem) {
             characterItemId = characterItem.getId();
-            itemId = characterItem.getItem().getId();
+            itemId = characterItem.getItemId();
             wearingStatus = characterItem.getWearingStatus();
         }
     }

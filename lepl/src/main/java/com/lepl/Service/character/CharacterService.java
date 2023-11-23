@@ -32,8 +32,8 @@ public class CharacterService {
 
     //캐릭터 화폐 업데이트
     @Transactional
-    public void updateCoin(Long money) {
-        characterRepository.updateCoin(money);
+    public void updateCoin(Long money, Long characterId) {
+        characterRepository.updateCoin(money, characterId);
     }
 
     //캐릭터 삭제

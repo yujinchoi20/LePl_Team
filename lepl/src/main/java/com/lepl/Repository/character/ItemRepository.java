@@ -40,9 +40,11 @@ public class ItemRepository {
                 .getResultList();
     }
 
-    public int updatePurchase(int purchase_quantity) {
-        return em.createQuery("update Item i set i.purchase_quantity =: purchase_quantity")
+    public int updatePurchase(int purchase_quantity, Long itemId) {
+        return em.createQuery("update Item i set i.purchase_quantity =: purchase_quantity" +
+                        " where i.id =: itemId")
                 .setParameter("purchase_quantity", purchase_quantity)
+                .setParameter("itemId", itemId)
                 .executeUpdate();
     }
 

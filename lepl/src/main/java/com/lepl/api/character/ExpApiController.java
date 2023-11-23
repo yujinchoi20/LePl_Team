@@ -93,7 +93,7 @@ public class ExpApiController {
 
         //경험치 업데이트
         expService.update(exp, pointTask, pointTimer); //더티 체킹
-        characterService.updateCoin(money + pointTask); //더티 체킹
+        characterService.updateCoin(money + pointTask, character.getId()); //더티 체킹
 
         return ResponseEntity.status(HttpStatus.OK).body("일정을 완료하였습니다."); //200
     }
@@ -160,7 +160,7 @@ public class ExpApiController {
 
         //경험치 업데이트
         expService.update(exp, pointTask, pointTimer); //더티 체킹
-        characterService.updateCoin(money + pointTask + pointTimer); //더티 체킹
+        characterService.updateCoin(money + pointTask + pointTimer, character.getId()); //더티 체킹
 
         return ResponseEntity.status(HttpStatus.OK).body("일정을 완료하였습니다."); //200
     }
