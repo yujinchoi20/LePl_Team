@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import static com.lepl.util.Messages.SESSION_NAME_LOGIN;
+
 
 @Slf4j // log
 public class MemberCheckInterceptor implements HandlerInterceptor {
@@ -17,7 +19,7 @@ public class MemberCheckInterceptor implements HandlerInterceptor {
         log.info("인증 체크 인터셉터 실행 {}", requestURI);
 
         HttpSession session = request.getSession();
-        if(session == null || session.getAttribute("login_member")==null) {
+        if(session == null || session.getAttribute(SESSION_NAME_LOGIN)==null) {
             log.info("미인증 사용자 요청");
             // 회원 아님을 알림
             response.setStatus(HttpStatus.UNAUTHORIZED.value()); // status code : 401

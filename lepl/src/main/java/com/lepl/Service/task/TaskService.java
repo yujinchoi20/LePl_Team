@@ -8,13 +8,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true) // 읽기모드 기본 사용
 @RequiredArgsConstructor // 생성자 주입 + 엔티티 매니저(서비스에서는 안씀)
 public class TaskService {
     private final TaskRepository taskRepository;
+
+    /**
+     * join, findOne, findOneWithMember, remove, update, updateState
+     */
 
     /**
      * 일정 추가
@@ -31,10 +34,8 @@ public class TaskService {
     public Task findOne(Long taskId) {
         return taskRepository.findOne(taskId);
     }
-    public List<Task> findTasks() {
-        return taskRepository.findAll();
-    }
-    public List<Task> findOneWithMember(Long memberId, Long taskId) {
+
+    public Task findOneWithMember(Long memberId, Long taskId) {
         return taskRepository.findOneWithMember(memberId, taskId);
     }
 
@@ -46,22 +47,14 @@ public class TaskService {
         taskRepository.remove(task);
     }
 
-    /*
-    * 일정 업데이트
-    * 1. 일정 추가
-    * 2. 일정 잔여 시간 업데이트
-    * */
-    @Transactional // 쓰기모드 사용 위해 - db 적용
+    @Transactional // 더티체킹 - db 적용
     public void update(Task task, String content, LocalDateTime startTime, LocalDateTime endTime) {
-        task.setContent(content);
-        task.setStartTime(startTime);
-        task.setEndTime(endTime);
+        task.updateTask(content, startTime, endTime);
     }
 
     @Transactional // 일정 완료 & 타이머 종료 - db 적용
-    public void updateStatus(Task task, TaskStatus taskStatus, Long remainTime) {
-        task.getTaskStatus().setCompletedStatus(taskStatus.getCompletedStatus());
-        task.getTaskStatus().setTimerOnOff(taskStatus.getTimerOnOff());
-        task.setRemainTime(remainTime);
+    public void updateStatus(Task task, Boolean completedStatus, Boolean timerOnOff, Long remainTime) {
+        TaskStatus taskStatus = task.getTaskStatus().update(completedStatus,timerOnOff);
+        task.updateTaskStatus(taskStatus, remainTime);
     }
 }

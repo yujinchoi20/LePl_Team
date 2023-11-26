@@ -1,13 +1,18 @@
 package com.lepl.api.argumentresolver;
 
+import com.lepl.Repository.member.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import static com.lepl.util.Messages.SESSION_NAME_LOGIN;
+
 
 @Slf4j
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
@@ -30,10 +35,11 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         HttpSession session = request.getSession(false); // false : 없으면 null
         if(session == null) {
+            log.info("null");
             return null;
         }
 
-        Long memberId = Long.valueOf(session.getAttribute("login_member").toString());
+        Long memberId = Long.valueOf(session.getAttribute(SESSION_NAME_LOGIN).toString());
         return memberId;
     }
 }

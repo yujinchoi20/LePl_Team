@@ -1,28 +1,27 @@
 package com.lepl.Repository.character;
 
 import com.lepl.domain.character.Character;
+import com.lepl.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-@Repository
-@RequiredArgsConstructor
-public class CharacterRepository {
+import java.util.List;
 
+@Repository
+@RequiredArgsConstructor // 생성자 주입(엔티티매니저)
+public class CharacterRepository {
     private final EntityManager em;
 
-    /*
-        save, findOne, remove
-    */
-
-    //캐릭터 생성
+    /**
+     * save, findOne, remove
+     */
     public void save(Character character) {
         if(character.getId() == null) {
             em.persist(character);
         }
     }
 
-    //캐릭터 조회
     public Character findOne(Long id) {
         return em.find(Character.class, id);
     }
@@ -36,8 +35,20 @@ public class CharacterRepository {
                 .executeUpdate();
     }
 
-    //캐릭터 삭제
-    public void remove (Long id) {
-        em.remove(id);
+    /**
+     * memberId로 캐릭터 조회
+     */
+    public Character findCharacterWithMember(Long memberId) {
+        List<Member> members = em.createQuery("select m from Member m " +
+                        "join fetch m.character c " +
+                        "where m.id = :memberId", Member.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+        if(members.isEmpty()) return null;
+        Character character = members.get(0).getCharacter();
+        if(character==null) return null;
+        else return character;
     }
+
+    public void remove(Character character) { em.remove(character);}
 }

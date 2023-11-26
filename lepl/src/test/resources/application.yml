@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # 테스트 코드는 메모리 DB를 사용하기 위해 전부 주석
+=======
+# 테스트 코드는 메모리 DB를 사용하기 위해 전부 주석 -> h2 사용하겠음
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf
 
 spring:
   datasource:
@@ -9,7 +13,11 @@ spring:
 
   jpa:
     hibernate:
+<<<<<<< HEAD
       ddl-auto: update # table 자동 생성
+=======
+      ddl-auto: create # table 자동 생성
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf
 #      ddl-auto: none
     properties:
       hibernate:
@@ -22,4 +30,8 @@ logging.level:
 
 logging:
   level:
+<<<<<<< HEAD
     com.lepl: debug
+=======
+    com.lepl: debug
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf

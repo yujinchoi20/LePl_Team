@@ -1,46 +1,28 @@
 package com.lepl.Service.character;
 
 import com.lepl.Repository.character.CharacterItemRepository;
-import com.lepl.Repository.character.CharacterRepository;
-import com.lepl.Repository.character.ExpRepository;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.CharacterItem;
-import com.lepl.domain.character.Exp;
-import com.lepl.domain.character.Item;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true) //읽기 모드
+@Transactional(readOnly = true) // 읽기모드
 @RequiredArgsConstructor
 public class CharacterItemService {
+    private final CharacterItemRepository characterItemRepository;
 
-    @Autowired
-    CharacterItemRepository characterItemRepository;
+    /**
+     * save, findOne, findAll, remove
+     */
+    @Transactional // 쓰기모드
+    public Long join(CharacterItem characterItem) { characterItemRepository.save(characterItem); return characterItem.getId(); }
 
-    /*
-        save, findOne, findAll, remove
-    */
-
-    //캐릭터 아이템 저장
-    @Transactional
-    public void save(CharacterItem characterItem) {
-        characterItemRepository.save(characterItem);
-    }
-
-    //캐릭터 아이템 1개 조회
-    public CharacterItem findOne(Long id) {
-        return characterItemRepository.findOne(id);
-    }
-
-    //캐릭터 아이템 전체 조회
-    public List<CharacterItem> findAll() {
-        return characterItemRepository.findAll();
-    }
+    public CharacterItem findOne(Long characterItemId) { return characterItemRepository.findOne(characterItemId); }
+    public List<CharacterItem> findAll() {return characterItemRepository.findAll();}
 
     //사용자 소유 아이템 전체 조회
     public List<CharacterItem> findAllWithMemberItem(Long characterId) {
@@ -53,9 +35,6 @@ public class CharacterItemService {
         characterItemRepository.updateStatus(characterItemId, status);
     }
 
-    //소유 아이템 삭제
     @Transactional
-    public void remove(CharacterItem characterItem) {
-        characterItemRepository.remove(characterItem);
-    }
+    public void remove(CharacterItem characterItem) { characterItemRepository.remove(characterItem); }
 }

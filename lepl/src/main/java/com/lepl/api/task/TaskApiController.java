@@ -13,11 +13,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.lepl.util.Messages.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,24 +33,20 @@ public class TaskApiController {
     private final MemberService memberService;
 
     /**
+     * create, delete, update
+     */
+
+    /**
      * 일정 추가
      * 요청 형식(json) : CreateTaskRequestDto
      */
     @PostMapping(value = "/new")
-    public String create(@Login Long memberId, @RequestBody CreateTaskRequestDto request) {
-        Lists lists = null;
-        List<Lists> listsList = listsService.findByCurrent(memberId, request.startTime); // db 에 기존 lists+member 가 있나 확인 (startTime, id 로 확인)
-
-        // lists 가 없을 경우
-        if(listsList.isEmpty()) { 
+    public ResponseEntity<String> create(@Login Long memberId, @RequestBody CreateTaskRequestDto request) {
+        Lists lists = listsService.findByCurrent(memberId, request.startTime); // db 에 startTime 인 lists 있는지 먼저 조회
+        if (lists == null) { // null 인 경우 새로생성
             Member member = memberService.findOne(memberId);
-            lists = Lists.createLists(member
-                    , request.startTime
-                    , new ArrayList<Task>());
-        } else { // lists 가 있을 경우
-            lists = listsList.get(0);
+            lists = Lists.createLists(member, request.startTime, new ArrayList<Task>());
         }
-        listsService.join(lists);
 
         LocalDateTime start = request.startTime;
         LocalDateTime end = request.endTime;
@@ -55,47 +55,41 @@ public class TaskApiController {
         //분으로 표시 = hour*60 + minutes
 
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
-        Task task = Task.createTask(request.content
-                , request.startTime
-                , request.endTime, taskStatus, request.remainTime);
+        Task task = Task.createTask(request.content, request.startTime, request.endTime, taskStatus, request.remainTime);
         lists.addTask(task); // 일정 추가
 
+        listsService.join(lists);
         taskStatusService.join(taskStatus);
         taskService.join(task);
-        return "일정 등록 성공";
+        return ResponseEntity.status(HttpStatus.CREATED).body(SUCCESS_TASK);
     }
 
-
     /**
-     * 일정 삭제 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cascade 필요할 수도 있으니 잘 확인
+     * 일정 삭제
+     * 요청 형식(json) : DeleteTaskRequestDto
      */
     @PostMapping(value = "/member/delete")
     public ResponseEntity<String> delete(@Login Long memberId, @RequestBody DeleteTaskRequestDto request) {
-        List<Task> tasks = taskService.findOneWithMember(memberId, request.getTaskId());
-        if(tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
-        taskService.remove(tasks.get(0));
-        return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 삭제되었습니다."); // 200
+        Task task = taskService.findOneWithMember(memberId, request.getTaskId());
+        if (task == null) {
+            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(VALID_TASK); // 208
+        }
+        taskService.remove(task);
+        return ResponseEntity.status(HttpStatus.OK).body(SUCCESS_TASK_DELETE); // 200
     }
 
     /**
-     * 일정 수정 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cascade 필요할 수도 있으니 잘 확인
-     * (변경 감지를 사용해서 데이터를 수정) => 더티체킹
+     * 일정 수정
+     * 요청 형식(json) : UpdateTaskRequestDto
      */
     @PostMapping(value = "/member/update")
-    public ResponseEntity<String> update(@Login Long memberId
-            , @RequestBody UpdateTaskRequestDto request) {
-
-        List<Task> tasks = taskService.findOneWithMember(memberId, request.getTaskId());
-
-        if(tasks.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("이미 삭제된 일정입니다."); // 404
+    public ResponseEntity<String> update(@Login Long memberId, @RequestBody UpdateTaskRequestDto request) {
+        Task task = taskService.findOneWithMember(memberId, request.getTaskId());
+        if (task == null) {
+            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(VALID_TASK); // 208
         }
-
-        taskService.update(tasks.get(0), request.content
-                , request.startTime, request.endTime); // 변경 감지
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("해당 일정이 수정되었습니다."); // 200
+        taskService.update(task, request.content, request.startTime, request.endTime); // 변경 감지
+        return ResponseEntity.status(HttpStatus.OK).body(SUCCESS_TASK_UPDATE); // 200
     }
 
 
@@ -105,12 +99,15 @@ public class TaskApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+
         private Long remainTime;
     }
+
     @Getter
     static class DeleteTaskRequestDto {
         private Long taskId;
     }
+
     @Getter
     static class UpdateTaskRequestDto {
         private Long taskId;

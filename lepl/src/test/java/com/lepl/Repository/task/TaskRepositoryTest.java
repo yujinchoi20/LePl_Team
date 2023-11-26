@@ -1,31 +1,48 @@
 package com.lepl.Repository.task;
 
+<<<<<<< HEAD
 import com.lepl.Repository.character.CharacterRepository;
-import com.lepl.Repository.character.ExpRepository;
-import com.lepl.Service.character.ExpService;
-import com.lepl.domain.character.Exp;
+=======
+import com.lepl.domain.member.Member;
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
 import com.lepl.domain.task.TaskStatus;
 import jakarta.persistence.EntityManager;
+<<<<<<< HEAD
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+=======
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+<<<<<<< HEAD
 import java.time.Month;
 import java.util.List;
 
 
 // 현재 메모리에서 테스트하기 때문에 h2 DB에 적용을 보려면 main 함수에서!!
 @SpringBootTest
+=======
+import java.util.ArrayList;
+import java.util.List;
+
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest
+@Slf4j
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf
 public class TaskRepositoryTest {
     @Autowired
     TaskRepository taskRepository;
     @Autowired
+<<<<<<< HEAD
     ListsRepository listsRepository;
     @Autowired
     EntityManager em;
@@ -89,11 +106,40 @@ public class TaskRepositoryTest {
         // then
         if(!list.isEmpty()) {
             for(Task t : list) System.out.println(t.getId()); // 2
+=======
+    EntityManager em;
+    static Long taskId;
+
+    /**
+     * save, findOne, findAll, findOneWithMember, remove
+     */
+    @Test
+    @Order(1)
+    @Transactional // 자동 롤백
+    @Rollback(false) // 삭제() 테스트 위해 잠시 롤백 제거
+    public void 일정_저장과조회() throws Exception {
+        // given
+        Task task = Task.createTask("테스트입니다.", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
+
+        // when
+        taskRepository.save(task); // persist
+        taskId = task.getId();
+        Task findTask = taskRepository.findOne(task.getId()); // 캐시에서 가져오는
+        List<Task> taskList = taskRepository.findAll(); // flush
+
+        // then
+        Assertions.assertEquals(task.getId(), findTask.getId());
+        log.info("taskList size : {}", taskList.size());
+        log.info("taskID : {}", taskId);
+        for (Task t : taskList) {
+            log.info(t.getContent());
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf
         }
     }
 
     @Test
     @Transactional
+<<<<<<< HEAD
     public void 경험치_업데이트() throws Exception {
         //Given
         Task task = new Task();
@@ -116,5 +162,46 @@ public class TaskRepositoryTest {
 
         //Then
 
+=======
+    public void 멤버의_일정조회() throws Exception {
+        // given
+        Task task = Task.createTask("멤버 테스트", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
+        Member member = Member.createMember("UID", "닉네임");
+        em.persist(member); // id 위해(FK 오류 방지)
+        Lists lists = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());
+        em.persist(task); // id
+        lists.addTask(task);
+        member.addLists(lists);
+        em.persist(lists);
+        log.info("전");
+        em.flush(); // insert
+        log.info("후");
+
+        // when
+        Task findTask = taskRepository.findOneWithMember(member.getId(), task.getId()); // flush
+
+        // then
+        Assertions.assertEquals(task, findTask); // em.clear() 없으므로 주소 동일
+        Assertions.assertEquals(task.getId(), findTask.getId());
+        Assertions.assertEquals(findTask.getContent(), "멤버 테스트");
+    }
+
+    @Test
+    @Order(2)
+    @Transactional // 자동 롤백
+    @Rollback(false) // db 확인용
+    public void 일정_삭제() throws Exception {
+        // given
+        Task task = taskRepository.findOne(taskId); // 위에서 저장했던 Task 찾기
+
+        // when
+        taskRepository.remove(task); // persist(delete)
+        em.flush(); // 강제 flush()
+        em.clear();
+        task = taskRepository.findOne(taskId);
+
+        // then
+        Assertions.assertEquals(task, null);
+>>>>>>> 7226d7649c24000b0c9079fbcc5c898f155c56cf
     }
 }

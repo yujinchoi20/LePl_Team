@@ -3,26 +3,22 @@ package com.lepl.Service.character;
 import com.lepl.Repository.character.NotificationRepository;
 import com.lepl.domain.character.Notification;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true) //읽기 모드
+@Transactional(readOnly = true) // 읽기모드
 @RequiredArgsConstructor
 public class NotificationService {
+    private final NotificationRepository notificationRepository;
 
-    @Autowired
-    NotificationRepository notificationRepository;
-
-    /*
-    * save, findOne, findAll, remove, findAllWithCharacter
-    */
-
-    @Transactional
-    public Long save(Notification notification) {
+    /**
+     * join, findOne, findAll, remove, findAllWithCharacter
+     */
+    @Transactional // 쓰기모드
+    public Long join(Notification notification) {
         notificationRepository.save(notification);
         return notification.getId();
     }
@@ -40,7 +36,7 @@ public class NotificationService {
         notificationRepository.remove(notification);
     }
 
-    public List<Notification> findAllWriteCharacter(Long characterId) {
+    public List<Notification> findAllWithCharacter(Long characterId) {
         return notificationRepository.findAllWithCharacter(characterId);
     }
 }

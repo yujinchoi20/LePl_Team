@@ -1,36 +1,46 @@
 package com.lepl.domain.character;
 
 
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "CHARACTER_ITEM")
 public class CharacterItem {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "character_item_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY) //지연 로딩, 양방향
-    @JoinColumn(name = "character_id") //FK
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "character_id")
     private Character character;
 
+    @NotNull
+    private Long itemId; // 실제 아이템이 가지는 고유값(Null 불가)
     private Boolean wearingStatus; // 착용 유무 T/F
-    private Long itemId; //아이템 정보
 
-    /*
-        캐릭터 아이템 생성 편의 메서드
+    /**
+     * 생성 편의 메서드
      */
     public static CharacterItem createCharacterItem(Character character, Boolean wearingStatus, Long itemId) {
         CharacterItem characterItem = new CharacterItem();
-        characterItem.setCharacter(character);
-        characterItem.setWearingStatus(wearingStatus);
-        characterItem.setItemId(itemId);
+        characterItem.character = character;
+        characterItem.wearingStatus = wearingStatus;
+        characterItem.itemId = itemId;
 
         return characterItem;
+    }
+
+    /**
+     * 연관관계 편의 메서드
+     */
+    public void setCharacter(Character character) {
+        this.character = character;
     }
 }

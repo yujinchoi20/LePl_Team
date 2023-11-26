@@ -57,7 +57,7 @@ public class CharacterItemApiController {
         if(money >= price) { //현재 보유한 화폐로 아이템을 구매할 수 있다면
             if(cnt >= 1) { //재고 수량이 있다면 -> 이 조건에 해당되어야만 아이템을 구매할 수 있음!!
                 characterItem = CharacterItem.createCharacterItem(character, Boolean.FALSE, wantItemId);
-                characterItemService.save(characterItem); //아이템까지 추가해서 저장
+                characterItemService.join(characterItem); //아이템까지 추가해서 저장
                 characterService.updateCoin(money - price, characterId); //아이템 구매로 인한 화폐 차감 -> 더티체킹
                 itemService.updatePurchase(cnt - 1, itemId); //아이템은 1개씩 구매 가능
 

@@ -1,8 +1,10 @@
 package com.lepl.api.character;
 
+
+import com.lepl.Service.character.CharacterService;
 import com.lepl.Service.character.NotificationService;
-import com.lepl.Service.member.MemberService;
 import com.lepl.api.argumentresolver.Login;
+import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Notification;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,27 +24,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/notification")
 public class NotificationApiController {
-    private final MemberService memberService;
+    private final CharacterService characterService;
     private final NotificationService notificationService;
+
+    /**
+     * findAllWithCharacter
+     */
 
     /**
      * 알림 조회 API
      */
     @GetMapping("/all")
     public ResponseEntity<List<FindNotificationDto>> findAllWithCharacter(@Login Long memberId) {
-        Long characterId = memberService.findOne(memberId).getCharacter().getId();
-        List<Notification> notifications = notificationService.findAllWriteCharacter(characterId);
-
-        if(notifications.isEmpty()) {
-            return null;
+        Character character = characterService.findCharacterWithMember(memberId);
+        List<Notification> notifications = notificationService.findAllWithCharacter(character.getId());
+        if (notifications.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // 204
         }
-
         List<FindNotificationDto> result = notifications.stream()
                 .map(o -> new FindNotificationDto(o))
                 .collect(Collectors.toList());
-
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
 
     // DTO
     @Getter
@@ -51,6 +55,7 @@ public class NotificationApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+
         public FindNotificationDto(Notification notification) {
             this.id = notification.getId();
             this.content = notification.getContent();
