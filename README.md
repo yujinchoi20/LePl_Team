@@ -2,6 +2,11 @@
 
 -----------------
 
+#### Skills
+* Spring Boot
+* JPA
+* H2 Database
+
 #### Version
 
 * org.springframework.boot: version '3.1.2'
@@ -140,6 +145,64 @@ __[테스트 코드 작성 후 실행]__
 
 ==> Service, Api 부분에서 세부적으로 수정해야되는 사항임! (수정 예정)
 
+### 10/10
+
+* Notification 수정
+* MemberApiController 중복회원 추가
+* TimerApiContoller 추가 
+
+-> 테스트 코드 작성 예정
+
+### 09/26
+
+* Exp 테스트 코드 -> 하루 최대 경험치가 넘어가면 레벨업 안됨, 레벨업 필요 경험치 수식 변경((level - 1) ^ 2) * 2)
+* Notification Entity, Repository, Service 추가
+
+###### Service/Character/ExpService.java
+
+-> 매일 경험치를 리셋하는 updatePoint() 메서드 
+
+-> @Scheduled(cron = ), 쿼츠 크론 사용(0 0 0 1/1 * ? *): 매일 오전 12시 마다
+
+* Notification 테스트 코드 추가 예정
+
+### 09/25
+* 캐릭터 생성 테스트 완료!
+* 친구 기능 -> 팔로우/팔로잉 기능으로 변경 완료!
+
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/77f00680-bff2-4d5b-a93d-e5ed9cc61fc8)
+
+-> 테스트 결과 (Rollback)
+
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/5e3ff17c-d250-4ecf-b1c3-14bf156fd5ea)
+
+-> H2 DB
+
+* 영속성 전이(cascade)
+
+@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+@JoinColumn(name = "exp_id") // FK
+
+private Exp exp;
+
+-> FK 영속성 전이 추가!
+
+PK 데이터가 추가되기 전에 FK 데이터가 추가되는 것을 막아줌. 
+
+### 09/23
+* 캐릭터 생성 테스트 코드 완성하기 -> 예상 시나리오: 캐릭터 생성과 동시에 경험치 0, 레벨 1, 친구(팔로잉) 0으로 세팅
+* 친구 기능 -> 팔로우/팔로잉 기능으로 수정하기
+* 알림 테이블, 엔티티 만들기
+
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/0834a3c2-2b7e-4e14-8d73-a5b73338b471)
+
+### 09/17
+* Character 기능 개발 진행중
+* 회원가입시 유저의 캐릭터도 생성, 로그인시 유저의 캐릭터 불러오기
+* 캐릭터의 레벨도 같이 가져오기
+
+-------------------------------------------------------------------------------------------------------------------------------
 ### 06/01
 * 연관관계 편의 메서드
 * Member 레포지토리, 서비스 개발
@@ -174,62 +237,3 @@ Task.class 를 지우고 실행 해보니 원하는 방식으로 test가 진행�
 
 ### 06/07
 * TaskStatusRepository, TaskStatusService 생성
-
-------
-
-### 09/17
-* Character 기능 개발 진행중
-* 회원가입시 유저의 캐릭터도 생성, 로그인시 유저의 캐릭터 불러오기
-* 캐릭터의 레벨도 같이 가져오기
-
-### 09/23
-* 캐릭터 생성 테스트 코드 완성하기 -> 예상 시나리오: 캐릭터 생성과 동시에 경험치 0, 레벨 1, 친구(팔로잉) 0으로 세팅
-* 친구 기능 -> 팔로우/팔로잉 기능으로 수정하기
-* 알림 테이블, 엔티티 만들기
-
-![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/0834a3c2-2b7e-4e14-8d73-a5b73338b471)
-
-### 09/25
-* 캐릭터 생성 테스트 완료!
-* 친구 기능 -> 팔로우/팔로잉 기능으로 변경 완료!
-
-![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/77f00680-bff2-4d5b-a93d-e5ed9cc61fc8)
-
--> 테스트 결과 (Rollback)
-
-![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/5e3ff17c-d250-4ecf-b1c3-14bf156fd5ea)
-
--> H2 DB
-
-* 영속성 전이(cascade)
-
-@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-
-@JoinColumn(name = "exp_id") // FK
-
-private Exp exp;
-
--> FK 영속성 전이 추가!
-
-PK 데이터가 추가되기 전에 FK 데이터가 추가되는 것을 막아줌. 
-
-### 09/26
-
-* Exp 테스트 코드 -> 하루 최대 경험치가 넘어가면 레벨업 안됨, 레벨업 필요 경험치 수식 변경((level - 1) ^ 2) * 2)
-* Notification Entity, Repository, Service 추가
-
-###### Service/Character/ExpService.java
-
--> 매일 경험치를 리셋하는 updatePoint() 메서드 
-
--> @Scheduled(cron = ), 쿼츠 크론 사용(0 0 0 1/1 * ? *): 매일 오전 12시 마다
-
-* Notification 테스트 코드 추가 예정
-
-### 10/10
-
-* Notification 수정
-* MemberApiController 중복회원 추가
-* TimerApiContoller 추가 
-
--> 테스트 코드 작성 예정
